@@ -1,13 +1,17 @@
-package com.example.android.mynews.Controllers;
+package com.example.android.mynews.Views;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.android.mynews.Controllers.Fragments.ArticleSearchFragment;
+import com.example.android.mynews.Controllers.Fragments.MostPopularFragment;
+import com.example.android.mynews.Controllers.Fragments.TopStoriesFragment;
+
 public class PageAdapter extends FragmentPagerAdapter {
 
 
-    PageAdapter(FragmentManager manager) {
+    public PageAdapter(FragmentManager manager) {
 
         super(manager);
     }

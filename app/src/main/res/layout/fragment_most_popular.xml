@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controllers.MostPopularFragment">
+    tools:context=".Controllers.Fragments.MostPopularFragment">
 
 
-    <TextView
-        android:id="@+id/most_popular_layout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/most_popular_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Most Popular Page"
-        android:gravity="center"/>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

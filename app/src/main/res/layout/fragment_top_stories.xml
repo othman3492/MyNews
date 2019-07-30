@@ -5,13 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controllers.TopStoriesFragment">
+    tools:context=".Controllers.Fragments.TopStoriesFragment">
 
-    <TextView
-        android:id="@+id/top_stories_layout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/top_stories_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Top Stories Page"
-        android:gravity="center"/>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

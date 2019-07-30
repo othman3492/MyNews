@@ -3,13 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controllers.ArticleSearchFragment">
+    tools:context=".Controllers.Fragments.ArticleSearchFragment">
 
-    <TextView
-        android:id="@+id/article_search_layout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/article_search_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Article Search Page"
-        android:gravity="center"/>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
