@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.android.mynews.Models.Article;
 import com.example.android.mynews.R;
+import com.example.android.mynews.Views.MostPopularAdapter;
 import com.example.android.mynews.Views.TopStoriesAdapter;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class MostPopularFragment extends Fragment {
         RecyclerView recyclerView = v.findViewById(R.id.most_popular_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        TopStoriesAdapter adapter = new TopStoriesAdapter(articleList, recyclerView);
+        MostPopularAdapter adapter = new MostPopularAdapter(articleList, recyclerView);
         recyclerView.setAdapter(adapter);
 
         return v;

@@ -24,11 +24,18 @@ public class ArticleSearchAdapter extends RecyclerView.Adapter<ArticleSearchAdap
         this.recyclerView = recyclerView;
     }
 
+
     @Override
     public ArticleSearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+        int height = recyclerView.getHeight() / 5;
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.article_layout, parent, false);
         ConstraintLayout constraintLayout = v.findViewById(R.id.article_constraint_layout);
+
+        ViewGroup.LayoutParams layoutParams = constraintLayout.getLayoutParams();
+        layoutParams.height = height;
+        constraintLayout.setLayoutParams(layoutParams);
 
         return new ArticleSearchViewHolder(v);
     }

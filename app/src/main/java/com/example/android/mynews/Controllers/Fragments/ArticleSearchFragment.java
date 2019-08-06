@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.android.mynews.Models.Article;
 import com.example.android.mynews.R;
+import com.example.android.mynews.Views.ArticleSearchAdapter;
 import com.example.android.mynews.Views.TopStoriesAdapter;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class ArticleSearchFragment extends Fragment {
         RecyclerView recyclerView = v.findViewById(R.id.article_search_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        TopStoriesAdapter adapter = new TopStoriesAdapter(articleList, recyclerView);
+        ArticleSearchAdapter adapter = new ArticleSearchAdapter(articleList, recyclerView);
         recyclerView.setAdapter(adapter);
 
         return v;
