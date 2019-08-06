@@ -32,7 +32,8 @@ public class TopStoriesFragment extends Fragment {
 
 
     private Disposable disposable;
-    private ArrayList<TopStoriesArticles> topStoriesArticles;
+    private TextView textViewTest;
+    private List<TopStoriesArticles.Result> topStoriesArticles;
 
 
     public TopStoriesFragment() {
@@ -51,15 +52,17 @@ public class TopStoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_top_stories, container, false);
+        View v = inflater.inflate(R.layout.fragment_test, container, false);
 
-        submit(v);
+        textViewTest = v.findViewById(R.id.text_view_test);
 
 
-        RecyclerView recyclerView = v.findViewById(R.id.top_stories_recycler_view);
+        /*RecyclerView recyclerView = v.findViewById(R.id.top_stories_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         TopStoriesAdapter adapter = new TopStoriesAdapter(topStoriesArticles);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);*/
+
+        submit(textViewTest);
 
         return v;
     }
@@ -81,10 +84,10 @@ public class TopStoriesFragment extends Fragment {
 
     private void executeHTTPRequestWithRetrofit() {
 
-        this.disposable = NYTStreams.streamFetchTopStoriesArticles("Home")
-                .subscribeWith(new DisposableObserver<List<TopStoriesArticles>>() {
+        this.disposable = NYTStreams.streamFetchTopStoriesArticles("section")
+                .subscribeWith(new DisposableObserver<List<TopStoriesArticles.Result>>() {
                     @Override
-                    public void onNext(List<TopStoriesArticles> topStoriesArticles) {
+                    public void onNext(List<TopStoriesArticles.Result> topStoriesArticles) {
 
                         Log.e("TAG", "On Next");
                         updateUIWithListOfArticles(topStoriesArticles);
@@ -106,12 +109,12 @@ public class TopStoriesFragment extends Fragment {
 
 
 
-    private void updateUIWithListOfArticles(List<TopStoriesArticles> articles) {
+    private void updateUIWithListOfArticles(List<TopStoriesArticles.Result> articles) {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (TopStoriesArticles article : articles) {
-            stringBuilder.append(article.getResults());
+        for (TopStoriesArticles.Result article : articles) {
+            stringBuilder.append(article);
         }
     }
 

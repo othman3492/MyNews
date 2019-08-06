@@ -1,5 +1,6 @@
 package com.example.android.mynews.Utils;
 
+import com.example.android.mynews.Models.MostPopularArticles;
 import com.example.android.mynews.Models.TopStoriesArticles;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 public class NYTStreams {
 
 
-    public static Observable<List<TopStoriesArticles>> streamFetchTopStoriesArticles(String section) {
+    public static Observable<List<TopStoriesArticles.Result>> streamFetchTopStoriesArticles(String section) {
 
         NYTService nytService = NYTService.retrofitTopStories.create(NYTService.class);
 
@@ -23,4 +24,17 @@ public class NYTStreams {
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10, TimeUnit.SECONDS);
     }
+
+
+    public static Observable<MostPopularArticles.Result> streamFetchMostPopularArticles(String section) {
+
+        NYTService nytService = NYTService.retrofitMostPopular.create(NYTService.class);
+
+        return nytService.getMostPopular(section)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .timeout(10, TimeUnit.SECONDS);
+    }
+
+
 }
