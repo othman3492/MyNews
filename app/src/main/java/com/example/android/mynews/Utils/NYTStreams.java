@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 public class NYTStreams {
 
 
-    public static Observable<List<TopStoriesArticles.Result>> streamFetchTopStoriesArticles(String section) {
+    public static Observable<TopStoriesArticles> streamFetchTopStoriesArticles(String section) {
 
         NYTService nytService = NYTService.retrofitTopStories.create(NYTService.class);
 
@@ -26,7 +26,7 @@ public class NYTStreams {
     }
 
 
-    public static Observable<MostPopularArticles.Result> streamFetchMostPopularArticles(String section) {
+    public static Observable<MostPopularArticles> streamFetchMostPopularArticles(String section) {
 
         NYTService nytService = NYTService.retrofitMostPopular.create(NYTService.class);
 

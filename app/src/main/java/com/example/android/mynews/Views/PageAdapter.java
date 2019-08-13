@@ -4,9 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.android.mynews.Controllers.Fragments.ArticleSearchFragment;
-import com.example.android.mynews.Controllers.Fragments.MostPopularFragment;
-import com.example.android.mynews.Controllers.Fragments.TopStoriesFragment;
+import com.example.android.mynews.Controllers.Fragments.ArticlesFragment;
 
 public class PageAdapter extends FragmentPagerAdapter {
 
@@ -17,26 +15,18 @@ public class PageAdapter extends FragmentPagerAdapter {
     }
 
 
+    @Override
+    public Fragment getItem(int i) {
+
+        return new ArticlesFragment();
+    }
+
+
     public int getCount() {
 
         return 3;
     }
 
-
-    public Fragment getItem(int position) {
-
-        switch (position) {
-
-            case 0 :
-                return TopStoriesFragment.newInstance();
-            case 1 :
-                return MostPopularFragment.newInstance();
-            case 2 :
-                return ArticleSearchFragment.newInstance();
-            default :
-                return null;
-        }
-    }
 
 
     public CharSequence getPageTitle(int position) {

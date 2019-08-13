@@ -2,7 +2,6 @@ package com.example.android.mynews.Controllers.Fragments;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,40 +9,35 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.android.mynews.Models.Article;
 import com.example.android.mynews.Models.TopStoriesArticles;
 import com.example.android.mynews.R;
-import com.example.android.mynews.Utils.NYTService;
 import com.example.android.mynews.Utils.NYTStreams;
-import com.example.android.mynews.Views.TopStoriesAdapter;
+import com.example.android.mynews.Views.ArticlesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 
 
-public class TopStoriesFragment extends Fragment {
+public class ArticlesFragment extends Fragment {
 
 
     private Disposable disposable;
-    private TextView textViewTest;
-    private List<TopStoriesArticles.Result> topStoriesArticles;
+    private List<TopStoriesArticles.Result> topStoriesList;
+    private ArticlesAdapter adapter;
 
 
-    public TopStoriesFragment() {
+    public ArticlesFragment() {
         // Required empty public constructor
     }
 
 
-    public static TopStoriesFragment newInstance() {
+    public static ArticlesFragment newInstance() {
 
-        return new TopStoriesFragment();
+        return new ArticlesFragment();
     }
 
 
@@ -52,17 +46,17 @@ public class TopStoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_test, container, false);
+        View v = inflater.inflate(R.layout.fragment_articles, container, false);
 
-        textViewTest = v.findViewById(R.id.text_view_test);
+        topStoriesList = new ArrayList<>();
 
-
-        /*RecyclerView recyclerView = v.findViewById(R.id.top_stories_recycler_view);
+        RecyclerView recyclerView = v.findViewById(R.id.articles_recycler_view);
+        this.adapter = new ArticlesAdapter(this.topStoriesList);
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        TopStoriesAdapter adapter = new TopStoriesAdapter(topStoriesArticles);
-        recyclerView.setAdapter(adapter);*/
 
-        submit(textViewTest);
+
+        this.executeTopStoriesRequest();
 
         return v;
     }
@@ -76,21 +70,16 @@ public class TopStoriesFragment extends Fragment {
     }
 
 
-    public void submit(View v) {
 
-        this.executeHTTPRequestWithRetrofit();
-    }
+    private void executeTopStoriesRequest() {
 
-
-    private void executeHTTPRequestWithRetrofit() {
-
-        this.disposable = NYTStreams.streamFetchTopStoriesArticles("section")
-                .subscribeWith(new DisposableObserver<List<TopStoriesArticles.Result>>() {
+        this.disposable = NYTStreams.streamFetchTopStoriesArticles("home")
+                .subscribeWith(new DisposableObserver<TopStoriesArticles>() {
                     @Override
-                    public void onNext(List<TopStoriesArticles.Result> topStoriesArticles) {
+                    public void onNext(TopStoriesArticles topStoriesArticles) {
 
                         Log.e("TAG", "On Next");
-                        updateUIWithListOfArticles(topStoriesArticles);
+                        updateTopStories(topStoriesArticles);
                     }
 
                     @Override
@@ -109,13 +98,14 @@ public class TopStoriesFragment extends Fragment {
 
 
 
-    private void updateUIWithListOfArticles(List<TopStoriesArticles.Result> articles) {
+    private void updateTopStories(TopStoriesArticles topStories) {
 
-        StringBuilder stringBuilder = new StringBuilder();
+        List<TopStoriesArticles.Result> articles = topStories.getResults();
+        this.topStoriesList.addAll(articles);
 
-        for (TopStoriesArticles.Result article : articles) {
-            stringBuilder.append(article);
-        }
+        this.adapter.notifyDataSetChanged();
+
+        Log.e("TAG", "" + topStoriesList.size());
     }
 
 
