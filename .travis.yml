@@ -1,6 +1,3 @@
-
-# Tutorial here: https://medium.com/@harmittaa/travis-ci-android-example-357f6e632fc4
-
 language: android
 sudo: required
 jdk: oraclejdk8
@@ -53,4 +50,8 @@ before_script:
 - adb shell input keyevent 82 &
 
 script:
+<<<<<<< HEAD
 - "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
+=======
+- "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
+>>>>>>> 69d4217810471a63fc2f1b7636270a1ecb54268d
