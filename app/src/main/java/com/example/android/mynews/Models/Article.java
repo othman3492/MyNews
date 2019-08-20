@@ -1,16 +1,18 @@
 package com.example.android.mynews.Models;
 
 
+import com.example.android.mynews.Utils.DateConverter;
 
 public class Article {
 
     private String section;
     private String title;
     private String date;
+    private String url;
+    private String imageUrl;
 
 
-
-    Article() {
+    public Article() {
 
     }
 
@@ -37,5 +39,62 @@ public class Article {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+
+    public Article createArticleFromTopStories(TopStoriesArticles.Result result) {
+
+        Article article = new Article();
+
+        article.title = result.getTitle();
+        article.date = DateConverter.ConvertDate(result.getPublishedDate());
+        article.section = result.getSection();
+        article.url = result.getUrl();
+        //article.imageUrl = result.getMultimedia().get(0).getUrl();
+
+        return article;
+    }
+
+
+    public Article createArticleFromMostPopular(MostPopularArticles.Result result) {
+
+        Article article = new Article();
+
+        article.title = result.getTitle();
+        article.date = DateConverter.ConvertDate(result.getPublishedDate());
+        article.section = result.getSection();
+        article.url = result.getUrl();
+        //article.imageUrl = result.getMedia().get(0).getMediaMetadata().get(0).getUrl();
+
+        return article;
+    }
+
+    public Article createArticleFromArticleSearch(ArticleSearchArticles.Doc result) {
+
+        Article article = new Article();
+
+        article.title = result.getHeadline().getMain();
+        article.date = DateConverter.ConvertDate(result.getPubDate());
+        article.section = result.getSectionName();
+        article.url = result.getWebUrl();
+        //article.imageUrl = result.getMultimedia().get(0).getUrl();
+
+        return article;
     }
 }

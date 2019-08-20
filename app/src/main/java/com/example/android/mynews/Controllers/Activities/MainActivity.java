@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.android.mynews.Views.ArticlesAdapter;
 import com.example.android.mynews.Views.PageAdapter;
 import com.example.android.mynews.R;
 
@@ -121,4 +122,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.navigationView = findViewById(R.id.activity_main_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 }

@@ -18,7 +18,7 @@ public class PageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
 
-        return new ArticlesFragment();
+        return ArticlesFragment.newInstance(i);
     }
 
 
@@ -38,7 +38,7 @@ public class PageAdapter extends FragmentPagerAdapter {
             case 1 :
                 return "MOST POPULAR";
             case 2 :
-                return "ARTICLE SEARCH";
+                return "INTERNATIONAL";
             default :
                 return null;
         }

@@ -1,6 +1,7 @@
 package com.example.android.mynews.Controllers.Fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.android.mynews.Controllers.Activities.ArticleActivity;
+import com.example.android.mynews.Models.Article;
+import com.example.android.mynews.Models.ArticleSearchArticles;
+import com.example.android.mynews.Models.MostPopularArticles;
 import com.example.android.mynews.Models.TopStoriesArticles;
 import com.example.android.mynews.R;
 import com.example.android.mynews.Utils.NYTStreams;
@@ -22,22 +27,30 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 
-public class ArticlesFragment extends Fragment {
+public class ArticlesFragment extends Fragment implements ArticlesAdapter.RecyclerViewOnClickListener {
 
 
+    private int page;
     private Disposable disposable;
-    private List<TopStoriesArticles.Result> topStoriesList;
+    private List<Article> articlesList;
     private ArticlesAdapter adapter;
 
 
     public ArticlesFragment() {
-        // Required empty public constructor
+
+
     }
 
 
-    public static ArticlesFragment newInstance() {
+    public static ArticlesFragment newInstance(int page) {
 
-        return new ArticlesFragment();
+        ArticlesFragment fragment = new ArticlesFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("PAGE", page);
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 
 
@@ -48,15 +61,19 @@ public class ArticlesFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_articles, container, false);
 
-        topStoriesList = new ArrayList<>();
+        assert getArguments() != null;
+        this.page = getArguments().getInt("PAGE");
+
+        this.articlesList = new ArrayList<>();
+        displayPage();
 
         RecyclerView recyclerView = v.findViewById(R.id.articles_recycler_view);
-        this.adapter = new ArticlesAdapter(this.topStoriesList);
+        this.adapter = new ArticlesAdapter(this.articlesList, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        this.executeTopStoriesRequest();
+
 
         return v;
     }
@@ -70,7 +87,6 @@ public class ArticlesFragment extends Fragment {
     }
 
 
-
     private void executeTopStoriesRequest() {
 
         this.disposable = NYTStreams.streamFetchTopStoriesArticles("home")
@@ -79,7 +95,7 @@ public class ArticlesFragment extends Fragment {
                     public void onNext(TopStoriesArticles topStoriesArticles) {
 
                         Log.e("TAG", "On Next");
-                        updateTopStories(topStoriesArticles);
+                        updateArticleList(createTopStoriesList(topStoriesArticles.getResults()));
                     }
 
                     @Override
@@ -97,15 +113,122 @@ public class ArticlesFragment extends Fragment {
     }
 
 
+    private void executeMostPopularRequest() {
 
-    private void updateTopStories(TopStoriesArticles topStories) {
+        this.disposable = NYTStreams.streamFetchMostPopularArticles(7)
+                .subscribeWith(new DisposableObserver<MostPopularArticles>() {
+                    @Override
+                    public void onNext(MostPopularArticles mostPopularArticles) {
 
-        List<TopStoriesArticles.Result> articles = topStories.getResults();
-        this.topStoriesList.addAll(articles);
+                        Log.e("TAG", "On Next");
+                        updateArticleList(createMostPopularList(mostPopularArticles.getResults()));
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.e("TAG", "On Error" + Log.getStackTraceString(e));
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                        Log.e("TAG", "On Complete");
+                    }
+                });
+    }
+
+
+    /*private void executeArticleSearchRequest() {
+
+        this.disposable = NYTStreams.streamFetchArticleSearchArticles( , "20190801", "20190819")
+                .subscribeWith(new DisposableObserver<ArticleSearchArticles>() {
+                    @Override
+                    public void onNext(ArticleSearchArticles articleSearchArticles) {
+
+                        Log.e("TAG", "On Next");
+                        createArticleSearchList(articleSearchArticles.getResponse().getDocs());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.e("TAG", "On Error" + Log.getStackTraceString(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                        Log.e("TAG", "On Complete");
+                    }
+                });
+    }*/
+
+
+    private List<Article> createTopStoriesList(List<TopStoriesArticles.Result> topStoriesList) {
+
+        List<Article> articleList = new ArrayList<>();
+
+        for (TopStoriesArticles.Result result : topStoriesList) {
+
+            Article article = new Article().createArticleFromTopStories(result);
+            articleList.add(article);
+        }
+
+        return articleList;
+
+    }
+
+
+    private List<Article> createMostPopularList(List<MostPopularArticles.Result> mostPopularList) {
+
+        List<Article> articleList = new ArrayList<>();
+
+        for (MostPopularArticles.Result result : mostPopularList) {
+
+            Article article = new Article().createArticleFromMostPopular(result);
+            articleList.add(article);
+        }
+
+        return articleList;
+    }
+
+
+    private List<Article> createArticleSearchList(List<ArticleSearchArticles.Doc> articleSearchList) {
+
+        List<Article> articleList = new ArrayList<>();
+
+        for (ArticleSearchArticles.Doc result : articleSearchList) {
+
+            Article article = new Article().createArticleFromArticleSearch(result);
+            articleList.add(article);
+        }
+
+        return articleList;
+    }
+
+
+    private void updateArticleList(List<Article> articlesList) {
+
+        this.articlesList.addAll(articlesList);
         this.adapter.notifyDataSetChanged();
+    }
 
-        Log.e("TAG", "" + topStoriesList.size());
+
+    private void displayPage() {
+
+        switch (page) {
+            case 0 :
+                executeTopStoriesRequest();
+                break;
+            case 1 :
+                executeMostPopularRequest();
+                break;
+            default :
+                executeTopStoriesRequest();
+                break;
+        }
     }
 
 
@@ -116,4 +239,12 @@ public class ArticlesFragment extends Fragment {
     }
 
 
+    @Override
+    public void recyclerViewOnClick(int position) {
+
+        Intent intent = new Intent (getActivity(), ArticleActivity.class);
+        String url = articlesList.get(position).getUrl();
+        intent.putExtra("URL", url);
+        startActivity(intent);
+    }
 }

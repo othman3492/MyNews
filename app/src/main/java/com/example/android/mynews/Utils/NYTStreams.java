@@ -1,5 +1,6 @@
 package com.example.android.mynews.Utils;
 
+import com.example.android.mynews.Models.ArticleSearchArticles;
 import com.example.android.mynews.Models.MostPopularArticles;
 import com.example.android.mynews.Models.TopStoriesArticles;
 
@@ -26,11 +27,22 @@ public class NYTStreams {
     }
 
 
-    public static Observable<MostPopularArticles> streamFetchMostPopularArticles(String section) {
+    public static Observable<MostPopularArticles> streamFetchMostPopularArticles(int period) {
 
         NYTService nytService = NYTService.retrofitMostPopular.create(NYTService.class);
 
-        return nytService.getMostPopular(section)
+        return nytService.getMostPopular(period)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .timeout(10, TimeUnit.SECONDS);
+    }
+
+
+    public static Observable<ArticleSearchArticles> streamFetchArticleSearchArticles(List<String> search, String beginDate, String endDate) {
+
+        NYTService nytService = NYTService.retrofitArticleSearch.create(NYTService.class);
+
+        return nytService.getArticleSearch(search, beginDate, endDate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10, TimeUnit.SECONDS);

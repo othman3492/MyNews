@@ -16,8 +16,8 @@
 
     <ImageView
         android:id="@+id/article_image_view"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="@id/article_view"
         app:layout_constraintStart_toStartOf="@+id/article_view"
@@ -48,13 +48,13 @@
 
     <TextView
         android:id="@+id/article_title"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="0dp"
         android:layout_margin="16dp"
         android:layout_marginBottom="8dp"
-        android:text="Hackers came, but the French were prepared"
         android:lines="2"
-        android:textSize="18sp"
+        android:text="Hackers came, but the French were prepared"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/article_view"
         app:layout_constraintEnd_toEndOf="@id/article_view"
         app:layout_constraintStart_toEndOf="@+id/article_image_view"

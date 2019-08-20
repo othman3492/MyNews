@@ -1,6 +1,7 @@
 package com.example.android.mynews.Views;
 
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.mynews.Models.TopStoriesArticles;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.example.android.mynews.Models.Article;
 import com.example.android.mynews.R;
+import com.example.android.mynews.Utils.DateConverter;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -20,12 +25,20 @@ import butterknife.ButterKnife;
 public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ArticlesViewHolder> {
 
 
-    private List<TopStoriesArticles.Result> topStoriesList;
+    public interface RecyclerViewOnClickListener {
+
+        void recyclerViewOnClick(int position);
+    }
 
 
-    public ArticlesAdapter(List<TopStoriesArticles.Result> topStoriesList) {
+    private List<Article> articlesList;
+    private RecyclerViewOnClickListener listener;
 
-        this.topStoriesList = topStoriesList;
+
+    public ArticlesAdapter(List<Article> articlesList, RecyclerViewOnClickListener listener) {
+
+        this.articlesList = articlesList;
+        this.listener = listener;
     }
 
 
@@ -34,7 +47,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.article_layout, parent, false);
 
-        return new ArticlesViewHolder(v);
+        return new ArticlesViewHolder(v, listener);
     }
 
 
@@ -42,19 +55,19 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
     public void onBindViewHolder(ArticlesViewHolder viewHolder, int position) {
 
 
-        viewHolder.populateViewHolder(this.topStoriesList.get(position));
+        viewHolder.populateViewHolder(this.articlesList.get(position));
     }
 
 
     @Override
     public int getItemCount() {
 
-        return topStoriesList.size();
+        return articlesList.size();
 
     }
 
 
-    class ArticlesViewHolder extends RecyclerView.ViewHolder {
+    class ArticlesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         @BindView(R.id.article_image_view)
@@ -66,23 +79,37 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         @BindView(R.id.article_title)
         TextView articleTitle;
 
+        RecyclerViewOnClickListener recyclerViewOnClickListener;
 
-        ArticlesViewHolder(View view) {
+
+        ArticlesViewHolder(View view, RecyclerViewOnClickListener listener) {
             super(view);
-            //bindViews();
             ButterKnife.bind(this, view);
+            this.recyclerViewOnClickListener = listener;
+            view.setOnClickListener(this);
 
         }
 
 
-        public void populateViewHolder(TopStoriesArticles.Result article) {
+        public void populateViewHolder(Article article) {
 
             articleCategory.setText(article.getSection());
             articleTitle.setText(article.getTitle());
-            articleDate.setText(article.getPublishedDate());
+            articleDate.setText(article.getDate());
+
+            Picasso.get().load(article.getImageUrl()).into(articleImage);
+
+            //Glide.with(context).load(article.getImageUrl()).into(articleImage);
 
         }
 
+        @Override
+        public void onClick(View v) {
 
+            recyclerViewOnClickListener.recyclerViewOnClick(getAdapterPosition());
+
+        }
     }
+
 }
+
