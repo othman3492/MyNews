@@ -87,9 +87,9 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
-    private void executeTopStoriesRequest() {
+    private void executeTopStoriesRequest(String section) {
 
-        this.disposable = NYTStreams.streamFetchTopStoriesArticles("home")
+        this.disposable = NYTStreams.streamFetchTopStoriesArticles(section)
                 .subscribeWith(new DisposableObserver<TopStoriesArticles>() {
                     @Override
                     public void onNext(TopStoriesArticles topStoriesArticles) {
@@ -113,9 +113,9 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
-    private void executeMostPopularRequest() {
+    private void executeMostPopularRequest(int period) {
 
-        this.disposable = NYTStreams.streamFetchMostPopularArticles(7)
+        this.disposable = NYTStreams.streamFetchMostPopularArticles(period)
                 .subscribeWith(new DisposableObserver<MostPopularArticles>() {
                     @Override
                     public void onNext(MostPopularArticles mostPopularArticles) {
@@ -220,14 +220,37 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
 
         switch (page) {
             case 0 :
-                executeTopStoriesRequest();
+                executeTopStoriesRequest("home");
                 break;
             case 1 :
-                executeMostPopularRequest();
+                executeMostPopularRequest(7);
                 break;
-            default :
-                executeTopStoriesRequest();
+            case 2 :
+                executeTopStoriesRequest("world");
                 break;
+            case 3 :
+                executeTopStoriesRequest("politics");
+                break;
+            case 4 :
+                executeTopStoriesRequest("national");
+                break;
+            case 5 :
+                executeTopStoriesRequest("business");
+                break;
+            case 6 :
+                executeTopStoriesRequest("sports");
+                break;
+            case 7 :
+                executeTopStoriesRequest("technology");
+                break;
+            case 8 :
+                executeTopStoriesRequest("science");
+                break;
+            case 9 :
+                executeTopStoriesRequest("automobiles");
+                break;
+
+
         }
     }
 

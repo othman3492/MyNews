@@ -24,12 +24,13 @@ public class PageAdapter extends FragmentPagerAdapter {
 
     public int getCount() {
 
-        return 3;
+        return 10;
     }
 
 
 
-    public CharSequence getPageTitle(int position) {
+    public String getPageTitle(int position) {
+
 
         switch (position) {
 
@@ -38,7 +39,21 @@ public class PageAdapter extends FragmentPagerAdapter {
             case 1 :
                 return "MOST POPULAR";
             case 2 :
-                return "INTERNATIONAL";
+                return "WORLD";
+            case 3 :
+                return "POLITICS";
+            case 4 :
+                return "NATIONAL";
+            case 5 :
+                return "BUSINESS";
+            case 6 :
+                return "SPORTS";
+            case 7 :
+                return "TECHNOLOGY";
+            case 8 :
+                return "SCIENCE";
+            case 9 :
+                return "AUTOMOBILES";
             default :
                 return null;
         }

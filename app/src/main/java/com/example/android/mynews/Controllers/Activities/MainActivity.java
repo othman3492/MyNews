@@ -2,6 +2,7 @@ package com.example.android.mynews.Controllers.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar mainToolbar;
+    private ViewPager viewPager;
 
 
     @Override
@@ -71,16 +73,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.activity_main_drawer_1 :
+            case R.id.activity_main_drawer_world :
+                viewPager.setCurrentItem(2);
                 break;
-            case R.id.activity_main_drawer_2 :
+            case R.id.activity_main_drawer_politics :
+                viewPager.setCurrentItem(3);
                 break;
-            case R.id.activity_main_drawer_3 :
+            case R.id.activity_main_drawer_national :
+                viewPager.setCurrentItem(4);
+                break;
+            case R.id.activity_main_drawer_business :
+                viewPager.setCurrentItem(5);
+                break;
+            case R.id.activity_main_drawer_sports :
+                viewPager.setCurrentItem(6);
+                break;
+            case R.id.activity_main_drawer_technology :
+                viewPager.setCurrentItem(7);
+                break;
+            case R.id.activity_main_drawer_science:
+                viewPager.setCurrentItem(8);
+                break;
+            case R.id.activity_main_drawer_automobiles :
+                viewPager.setCurrentItem(9);
                 break;
             default:
                 break;
@@ -93,12 +113,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void configureViewPager() {
 
-        ViewPager viewPager = findViewById(R.id.activity_main_viewpager);
+        viewPager = findViewById(R.id.activity_main_viewpager);
         viewPager.setAdapter(new PageAdapter(getSupportFragmentManager()));
 
         TabLayout tabs = findViewById(R.id.activity_main_tabs);
         tabs.setupWithViewPager(viewPager);
-        tabs.setTabMode(TabLayout.MODE_FIXED);
+        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
     private void configureToolbar() {
