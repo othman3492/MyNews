@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ArticlesViewHolder> {
 
 
+    // Interface to configure a listener on RecyclerView items
     public interface RecyclerViewOnClickListener {
 
         void recyclerViewOnClick(int position);
@@ -91,6 +92,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         }
 
 
+        // Update UI with text and image data from articles
         public void populateViewHolder(Article article) {
 
             articleCategory.setText(article.getSection());

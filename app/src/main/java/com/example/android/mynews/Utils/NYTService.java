@@ -17,6 +17,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
+
+// Make HTTP requests on New York Times API
+
 public interface NYTService {
 
 
@@ -24,6 +27,7 @@ public interface NYTService {
     String API_KEY = BuildConfig.NewYorkTimesApiKey;
 
 
+    // Top Stories API request
     @GET("svc/topstories/v2/{section}.json?api-key=" + API_KEY)
     Observable<TopStoriesArticles> getTopStories(@Path("section") String section);
 
@@ -34,6 +38,7 @@ public interface NYTService {
             .build();
 
 
+    // Most Popular API request
     @GET("svc/mostpopular/v2/viewed/{period}.json?api-key=" + API_KEY)
     Observable<MostPopularArticles> getMostPopular(@Path("period") int period);
 
@@ -44,8 +49,10 @@ public interface NYTService {
             .build();
 
 
+    // Article Search API request
     @GET("svc/search/v2/articlesearch.json?api-key=" + API_KEY)
-    Observable<ArticleSearchArticles> getArticleSearch(@Query("q") List<String> search,
+    Observable<ArticleSearchArticles> getArticleSearch(@Query("q") String query,
+                                                       @Query("fq") String filterQuery,
                                                        @Query("begin_date") String beginDate,
                                                        @Query("end_date") String endDate);
 

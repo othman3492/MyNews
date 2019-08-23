@@ -11,6 +11,8 @@ import com.example.android.mynews.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+// Activity displaying selected articles in a WebView
+
 public class ArticleActivity extends AppCompatActivity {
 
 

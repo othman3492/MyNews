@@ -22,6 +22,7 @@ public class PageAdapter extends FragmentPagerAdapter {
     }
 
 
+    // Set the number of tabs
     public int getCount() {
 
         return 10;
@@ -29,6 +30,7 @@ public class PageAdapter extends FragmentPagerAdapter {
 
 
 
+    // Set title for every tab depending on position
     public String getPageTitle(int position) {
 
 

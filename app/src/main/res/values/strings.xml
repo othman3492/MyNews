@@ -26,5 +26,6 @@
     <string name="business">Business</string>
     <string name="mynews_title">MYNEWS</string>
     <string name="logo">logo</string>
+    <string name="article_image">Article Image</string>
 
 </resources>

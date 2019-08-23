@@ -13,9 +13,11 @@ import io.reactivex.schedulers.Schedulers;
 
 
 
+// Make HTTP requests on New York Times API
+
 public class NYTStreams {
 
-
+    
     public static Observable<TopStoriesArticles> streamFetchTopStoriesArticles(String section) {
 
         NYTService nytService = NYTService.retrofitTopStories.create(NYTService.class);
@@ -38,11 +40,12 @@ public class NYTStreams {
     }
 
 
-    public static Observable<ArticleSearchArticles> streamFetchArticleSearchArticles(List<String> search, String beginDate, String endDate) {
+    public static Observable<ArticleSearchArticles> streamFetchArticleSearchArticles(String query, String filterQuery,
+                                                                                     String beginDate, String endDate) {
 
         NYTService nytService = NYTService.retrofitArticleSearch.create(NYTService.class);
 
-        return nytService.getArticleSearch(search, beginDate, endDate)
+        return nytService.getArticleSearch(query, filterQuery, beginDate, endDate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10, TimeUnit.SECONDS);

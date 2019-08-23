@@ -16,12 +16,13 @@
 
     <ImageView
         android:id="@+id/article_image_view"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="@id/article_view"
         app:layout_constraintStart_toStartOf="@+id/article_view"
-        app:layout_constraintTop_toTopOf="@id/article_view" />
+        app:layout_constraintTop_toTopOf="@id/article_view"
+        android:contentDescription="@string/article_image" />
 
     <TextView
         android:id="@+id/article_category"
@@ -32,6 +33,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/article_image_view"
         app:layout_constraintTop_toTopOf="@+id/article_image_view"
+        app:layout_constraintStart_toStartOf="@id/article_title"
         android:text="Europe > France"
         tools:ignore="SmallSp" />
 
@@ -39,11 +41,11 @@
         android:id="@+id/article_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="30dp"
+        android:text="09/05/17"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@id/article_view"
         app:layout_constraintTop_toTopOf="@+id/article_image_view"
-        android:text="09/05/17"
         tools:ignore="SmallSp" />
 
     <TextView

@@ -4,6 +4,7 @@ package com.example.android.mynews.Controllers.Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.example.android.mynews.Views.ArticlesAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
@@ -42,6 +44,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
+    // Create new fragment and save its page ID
     public static ArticlesFragment newInstance(int page) {
 
         ArticlesFragment fragment = new ArticlesFragment();
@@ -61,12 +64,14 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_articles, container, false);
 
+        // Get the fragment page ID to display corresponding data
         assert getArguments() != null;
         this.page = getArguments().getInt("PAGE");
 
         this.articlesList = new ArrayList<>();
         displayPage();
 
+        // Configure RecyclerView
         RecyclerView recyclerView = v.findViewById(R.id.articles_recycler_view);
         this.adapter = new ArticlesAdapter(this.articlesList, this);
         recyclerView.setAdapter(adapter);
@@ -87,6 +92,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
+    // Execute Top Stories API request and retrieve an array of articles from the selected section
     private void executeTopStoriesRequest(String section) {
 
         this.disposable = NYTStreams.streamFetchTopStoriesArticles(section)
@@ -113,9 +119,10 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
-    private void executeMostPopularRequest(int period) {
+    // Execute Most Popular API request and retrieve an array of articles from the selected period
+    private void executeMostPopularRequest() {
 
-        this.disposable = NYTStreams.streamFetchMostPopularArticles(period)
+        this.disposable = NYTStreams.streamFetchMostPopularArticles(7)
                 .subscribeWith(new DisposableObserver<MostPopularArticles>() {
                     @Override
                     public void onNext(MostPopularArticles mostPopularArticles) {
@@ -140,9 +147,10 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
+    // Execute Article Search API request and retrieve an array of articles corresponding to the search query
     /*private void executeArticleSearchRequest() {
 
-        this.disposable = NYTStreams.streamFetchArticleSearchArticles( , "20190801", "20190819")
+        this.disposable = NYTStreams.streamFetchArticleSearchArticles()
                 .subscribeWith(new DisposableObserver<ArticleSearchArticles>() {
                     @Override
                     public void onNext(ArticleSearchArticles articleSearchArticles) {
@@ -166,6 +174,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }*/
 
 
+    // Create a list of Article objects from retrieved Top Stories articles results
     private List<Article> createTopStoriesList(List<TopStoriesArticles.Result> topStoriesList) {
 
         List<Article> articleList = new ArrayList<>();
@@ -181,6 +190,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
+    // Create a list a Article objects from retrieved Most Popular articles results
     private List<Article> createMostPopularList(List<MostPopularArticles.Result> mostPopularList) {
 
         List<Article> articleList = new ArrayList<>();
@@ -195,6 +205,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
+    // Create a list a Article objects from retrieved Article Search articles results
     private List<Article> createArticleSearchList(List<ArticleSearchArticles.Doc> articleSearchList) {
 
         List<Article> articleList = new ArrayList<>();
@@ -209,6 +220,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
+    // Fill the Article list displayed in the RecyclerView with data from the API request
     private void updateArticleList(List<Article> articlesList) {
 
         this.articlesList.addAll(articlesList);
@@ -216,6 +228,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
+    // Update fragment with data from the right API request depending on page displayed
     private void displayPage() {
 
         switch (page) {
@@ -223,7 +236,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
                 executeTopStoriesRequest("home");
                 break;
             case 1 :
-                executeMostPopularRequest(7);
+                executeMostPopularRequest();
                 break;
             case 2 :
                 executeTopStoriesRequest("world");
@@ -262,6 +275,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
+    // Start Article Activity when clicked on a RecyclerView item to display it in a WebView
     @Override
     public void recyclerViewOnClick(int position) {
 
@@ -270,4 +284,5 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
         intent.putExtra("URL", url);
         startActivity(intent);
     }
+
 }

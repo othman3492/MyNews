@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import com.example.android.mynews.R;
 
+// Activity displaying the search and notifications layout
+
 public class SearchActivity extends AppCompatActivity {
 
     @Override

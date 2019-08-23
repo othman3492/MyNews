@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
     private Toolbar mainToolbar;
     private ViewPager viewPager;
 
@@ -35,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Update UI
         this.configureViewPager();
         this.configureToolbar();
         this.configureDrawerLayout();
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    // Configure menu in the toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -50,19 +51,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    // Set buttons in the toolbar menu
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.menu_activity_main_search :
+            case R.id.menu_activity_main_search:
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
                 return true;
-            default :
+            default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
 
+    // Set a back button in the toolbar
     private void OnBackPressed() {
 
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -72,34 +75,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // Configure items in the Navigation Drawer to open the corresponding tabs
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.activity_main_drawer_world :
+            case R.id.activity_main_drawer_world:
                 viewPager.setCurrentItem(2);
                 break;
-            case R.id.activity_main_drawer_politics :
+            case R.id.activity_main_drawer_politics:
                 viewPager.setCurrentItem(3);
                 break;
-            case R.id.activity_main_drawer_national :
+            case R.id.activity_main_drawer_national:
                 viewPager.setCurrentItem(4);
                 break;
-            case R.id.activity_main_drawer_business :
+            case R.id.activity_main_drawer_business:
                 viewPager.setCurrentItem(5);
                 break;
-            case R.id.activity_main_drawer_sports :
+            case R.id.activity_main_drawer_sports:
                 viewPager.setCurrentItem(6);
                 break;
-            case R.id.activity_main_drawer_technology :
+            case R.id.activity_main_drawer_technology:
                 viewPager.setCurrentItem(7);
                 break;
             case R.id.activity_main_drawer_science:
                 viewPager.setCurrentItem(8);
                 break;
-            case R.id.activity_main_drawer_automobiles :
+            case R.id.activity_main_drawer_automobiles:
                 viewPager.setCurrentItem(9);
                 break;
             default:
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return true;
     }
+
 
     private void configureViewPager() {
 
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(mainToolbar);
     }
 
-    private void configureDrawerLayout(){
+    private void configureDrawerLayout() {
         this.drawerLayout = findViewById(R.id.activity_main_drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout,
@@ -138,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
     }
 
-    private void configureNavigationView(){
-        this.navigationView = findViewById(R.id.activity_main_nav_view);
+    private void configureNavigationView() {
+        NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 

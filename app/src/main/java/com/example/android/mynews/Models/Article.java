@@ -3,6 +3,9 @@ package com.example.android.mynews.Models;
 
 import com.example.android.mynews.Utils.DateConverter;
 
+
+// Object used to convert every article retrieved from the API to a usable object
+
 public class Article {
 
     private String section;
@@ -66,7 +69,10 @@ public class Article {
         article.date = DateConverter.ConvertDate(result.getPublishedDate());
         article.section = result.getSection();
         article.url = result.getUrl();
-        //article.imageUrl = result.getMultimedia().get(0).getUrl();
+
+        if (result.getMultimedia().size() != 0) {
+            article.imageUrl = result.getMultimedia().get(0).getUrl();
+        }
 
         return article;
     }
@@ -77,10 +83,13 @@ public class Article {
         Article article = new Article();
 
         article.title = result.getTitle();
-        article.date = DateConverter.ConvertDate(result.getPublishedDate());
+        article.date = DateConverter.ConvertMostPopularDate(result.getPublishedDate());
         article.section = result.getSection();
         article.url = result.getUrl();
-        //article.imageUrl = result.getMedia().get(0).getMediaMetadata().get(0).getUrl();
+
+        if (result.getMedia().size() != 0) {
+            article.imageUrl = result.getMedia().get(0).getMediaMetadata().get(0).getUrl();
+        }
 
         return article;
     }
