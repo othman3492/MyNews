@@ -34,7 +34,6 @@
         app:layout_constraintStart_toEndOf="@+id/article_image_view"
         app:layout_constraintTop_toTopOf="@+id/article_image_view"
         app:layout_constraintStart_toStartOf="@id/article_title"
-        android:text="Europe > France"
         tools:ignore="SmallSp" />
 
     <TextView
@@ -42,7 +41,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
-        android:text="09/05/17"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@id/article_view"
         app:layout_constraintTop_toTopOf="@+id/article_image_view"
@@ -55,7 +53,6 @@
         android:layout_margin="16dp"
         android:layout_marginBottom="8dp"
         android:lines="2"
-        android:text="Hackers came, but the French were prepared"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/article_view"
         app:layout_constraintEnd_toEndOf="@id/article_view"

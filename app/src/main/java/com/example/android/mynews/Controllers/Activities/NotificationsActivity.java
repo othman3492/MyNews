@@ -1,29 +1,26 @@
 package com.example.android.mynews.Controllers.Activities;
 
-import android.app.DatePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.mynews.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.text.InputType.TYPE_NULL;
 
-// Activity displaying the search and notifications layout
 
-public class SearchActivity extends AppCompatActivity {
+public class NotificationsActivity extends AppCompatActivity {
 
 
     @BindView(R.id.search_edit_text) EditText searchQuery;
@@ -38,46 +35,34 @@ public class SearchActivity extends AppCompatActivity {
     @BindView(R.id.technology_checkbox) CheckBox technologyCheckbox;
     @BindView(R.id.world_checkbox) CheckBox worldCheckbox;
     @BindView(R.id.search_button) Button searchButton;
+    @BindView(R.id.notification_text_view) TextView notificationsTextView;
     @BindView(R.id.notification_switch) Switch notificationSwitch;
 
     List<CheckBox> checkBoxList;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_notification_layout);
         ButterKnife.bind(this);
 
-        configureDatePickers();
+        configureNotificationLayout();
+        configureSwitch();
 
 
     }
 
+    // Configure NotificationActivity layout by adding or removing views different from SearchActivity layout
+    public void configureNotificationLayout() {
 
-    // Configure DatePicker Dialogs to select begin and end dates when using Article Search
-    public void configureDatePickers() {
+        beginDate.setVisibility(View.GONE);
+        endDate.setVisibility(View.GONE);
+        searchButton.setVisibility(View.GONE);
+        notificationsTextView.setVisibility(View.VISIBLE);
+        notificationSwitch.setVisibility(View.VISIBLE);
 
-        final Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-
-        beginDate.setInputType(TYPE_NULL);
-        beginDate.setOnClickListener(v -> {
-
-            DatePickerDialog datePicker = new DatePickerDialog(v.getContext(),
-                    (view, year1, monthOfYear, dayOfMonth) -> beginDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1), year, month, day);
-            datePicker.show();
-        });
-
-        endDate.setInputType(TYPE_NULL);
-        endDate.setOnClickListener(v -> {
-
-            DatePickerDialog datePicker = new DatePickerDialog(v.getContext(),
-                    (view, year12, monthOfYear, dayOfMonth) -> endDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year12), year, month, day);
-            datePicker.show();
-        });
     }
 
 
@@ -100,5 +85,25 @@ public class SearchActivity extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+
+    // Configure notifications switch to alert user when query field is empty or no checkboxes are checked
+    public void configureSwitch() {
+
+        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            if (isChecked) {
+                if (!(searchQuery.getText().toString().equals(""))) {
+                    if (!isCheckboxesChecked()) {
+                        Toast.makeText(getApplicationContext(), "Select at least one category", Toast.LENGTH_SHORT).show();
+                        buttonView.setChecked(false);
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(),"Type a query in the search field", Toast.LENGTH_SHORT).show();
+                    buttonView.setChecked(false);
+                }
+            }
+        });
     }
 }

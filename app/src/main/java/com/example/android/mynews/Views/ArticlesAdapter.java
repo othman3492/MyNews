@@ -93,15 +93,20 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
 
         // Update UI with text and image data from articles
-        public void populateViewHolder(Article article) {
+        void populateViewHolder(Article article) {
 
             articleCategory.setText(article.getSection());
             articleTitle.setText(article.getTitle());
             articleDate.setText(article.getDate());
 
-            Picasso.get().load(article.getImageUrl()).into(articleImage);
+            if (article.getImageUrl() != null) {
+                Picasso.get().load(article.getImageUrl()).into(articleImage);
+            } else {
+                Picasso.get().load(R.drawable.empty_image).into(articleImage);
+            }
 
-            //Glide.with(context).load(article.getImageUrl()).into(articleImage);
+
+
 
         }
 

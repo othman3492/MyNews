@@ -9,9 +9,9 @@
         android:title="@string/search">
     </item>
     <item
-        android:id="@+id/menu_activity_main_more"
-        android:icon="@drawable/baseline_more_vert_white_18"
+        android:id="@+id/menu_activity_main_notifications"
+        android:icon="@drawable/baseline_notifications_white_24"
         app:showAsAction="ifRoom"
-        android:title="@string/more">
+        android:title="@string/notifications">
     </item>
 </menu>

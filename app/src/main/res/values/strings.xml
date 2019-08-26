@@ -27,5 +27,7 @@
     <string name="mynews_title">MYNEWS</string>
     <string name="logo">logo</string>
     <string name="article_image">Article Image</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="notifications">notifications</string>
 
 </resources>
