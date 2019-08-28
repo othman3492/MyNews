@@ -6,6 +6,7 @@ import com.example.android.mynews.Models.ArticleSearchArticles;
 import com.example.android.mynews.Models.MostPopularArticles;
 import com.example.android.mynews.Models.TopStoriesArticles;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -52,7 +53,7 @@ public interface NYTService {
     // Article Search API request
     @GET("svc/search/v2/articlesearch.json?api-key=" + API_KEY)
     Observable<ArticleSearchArticles> getArticleSearch(@Query("q") String query,
-                                                       @Query("fq") String filterQuery,
+                                                       @Query("fq") ArrayList<String> filterQuery,
                                                        @Query("begin_date") String beginDate,
                                                        @Query("end_date") String endDate);
 

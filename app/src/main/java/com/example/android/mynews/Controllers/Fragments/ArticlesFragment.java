@@ -3,6 +3,7 @@ package com.example.android.mynews.Controllers.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,16 +24,18 @@ import com.example.android.mynews.Views.ArticlesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 
+
 public class ArticlesFragment extends Fragment implements ArticlesAdapter.RecyclerViewOnClickListener {
 
 
-    private int page;
+    private int fragmentId;
     private Disposable disposable;
     private List<Article> articlesList;
     private ArticlesAdapter adapter;
@@ -45,12 +48,12 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
 
 
     // Create new fragment and save its page ID
-    public static ArticlesFragment newInstance(int page) {
+    public static ArticlesFragment newInstance(int fragmentId) {
 
         ArticlesFragment fragment = new ArticlesFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putInt("PAGE", page);
+        bundle.putInt("ID", fragmentId);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -58,7 +61,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
@@ -66,18 +69,11 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
 
         // Get the fragment page ID to display corresponding data
         assert getArguments() != null;
-        this.page = getArguments().getInt("PAGE");
+        this.fragmentId = getArguments().getInt("ID");
 
         this.articlesList = new ArrayList<>();
         displayPage();
-
-        // Configure RecyclerView
-        RecyclerView recyclerView = v.findViewById(R.id.articles_recycler_view);
-        this.adapter = new ArticlesAdapter(this.articlesList, this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
+        configureRecyclerView(v);
 
 
         return v;
@@ -148,15 +144,15 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
 
 
     // Execute Article Search API request and retrieve an array of articles corresponding to the search query
-    /*private void executeArticleSearchRequest() {
+    private void executeArticleSearchRequest(String query, ArrayList<String> filterQuery, String beginDate, String endDate) {
 
-        this.disposable = NYTStreams.streamFetchArticleSearchArticles()
+        this.disposable = NYTStreams.streamFetchArticleSearchArticles(query, filterQuery, beginDate, endDate)
                 .subscribeWith(new DisposableObserver<ArticleSearchArticles>() {
                     @Override
                     public void onNext(ArticleSearchArticles articleSearchArticles) {
 
                         Log.e("TAG", "On Next");
-                        createArticleSearchList(articleSearchArticles.getResponse().getDocs());
+                        updateArticleList(createArticleSearchList(articleSearchArticles.getResponse().getDocs()));
                     }
 
                     @Override
@@ -171,7 +167,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
                         Log.e("TAG", "On Complete");
                     }
                 });
-    }*/
+    }
 
 
     // Create a list of Article objects from retrieved Top Stories articles results
@@ -231,7 +227,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     // Update fragment with data from the right API request depending on page displayed
     private void displayPage() {
 
-        switch (page) {
+        switch (fragmentId) {
             case 0 :
                 executeTopStoriesRequest("home");
                 break;
@@ -262,8 +258,16 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
             case 9 :
                 executeTopStoriesRequest("automobiles");
                 break;
+            case 10 :
 
+                Intent intent = new Intent();
+                String query = intent.getStringExtra("QUERY");
+                ArrayList<String> filterQuery = intent.getStringArrayListExtra("FILTER_QUERY");
+                String beginDate = intent.getStringExtra("BEGIN_DATE");
+                String endDate = intent.getStringExtra("END_DATE");
 
+                executeArticleSearchRequest(query, filterQuery, beginDate, endDate);
+                break;
         }
     }
 
@@ -272,6 +276,16 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
 
         if (this.disposable != null && !this.disposable.isDisposed())
             this.disposable.dispose();
+    }
+
+
+    // Configure RecyclerView to display articles
+    public void configureRecyclerView(View v) {
+
+        RecyclerView recyclerView = v.findViewById(R.id.articles_recycler_view);
+        this.adapter = new ArticlesAdapter(this.articlesList, this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
 
@@ -284,5 +298,6 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
         intent.putExtra("URL", url);
         startActivity(intent);
     }
+
 
 }

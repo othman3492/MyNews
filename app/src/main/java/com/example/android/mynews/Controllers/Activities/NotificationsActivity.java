@@ -20,6 +20,8 @@ import butterknife.ButterKnife;
 
 
 
+// Activity displaying the notifications layout
+
 public class NotificationsActivity extends AppCompatActivity {
 
 
@@ -91,10 +93,12 @@ public class NotificationsActivity extends AppCompatActivity {
     // Configure notifications switch to alert user when query field is empty or no checkboxes are checked
     public void configureSwitch() {
 
+        String query = searchQuery.getText().toString();
+
         notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
             if (isChecked) {
-                if (!(searchQuery.getText().toString().equals(""))) {
+                if (!(query.equals(""))) {
                     if (!isCheckboxesChecked()) {
                         Toast.makeText(getApplicationContext(), "Select at least one category", Toast.LENGTH_SHORT).show();
                         buttonView.setChecked(false);

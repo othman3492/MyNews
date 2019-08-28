@@ -32,15 +32,15 @@ public class DateConverter {
     }
 
 
-    public static String ConvertMostPopularDate(String nytDate) {
+    public static String convertDatePicker(String datePicker) {
 
 
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
         Date date = null;
 
         try {
-            date = inputFormat.parse(nytDate);
+            date = inputFormat.parse(datePicker);
         } catch (ParseException e) {
             e.printStackTrace();
         }

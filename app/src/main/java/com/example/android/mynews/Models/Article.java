@@ -83,7 +83,7 @@ public class Article {
         Article article = new Article();
 
         article.title = result.getTitle();
-        article.date = DateConverter.ConvertMostPopularDate(result.getPublishedDate());
+        article.date = result.getPublishedDate();
         article.section = result.getSection();
         article.url = result.getUrl();
 
@@ -102,7 +102,7 @@ public class Article {
         article.date = DateConverter.ConvertDate(result.getPubDate());
         article.section = result.getSectionName();
         article.url = result.getWebUrl();
-        //article.imageUrl = result.getMultimedia().get(0).getUrl();
+        article.imageUrl = result.getMultimedia().get(0).getUrl();
 
         return article;
     }

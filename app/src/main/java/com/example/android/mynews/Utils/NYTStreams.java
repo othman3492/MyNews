@@ -4,6 +4,7 @@ import com.example.android.mynews.Models.ArticleSearchArticles;
 import com.example.android.mynews.Models.MostPopularArticles;
 import com.example.android.mynews.Models.TopStoriesArticles;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +41,7 @@ public class NYTStreams {
     }
 
 
-    public static Observable<ArticleSearchArticles> streamFetchArticleSearchArticles(String query, String filterQuery,
+    public static Observable<ArticleSearchArticles> streamFetchArticleSearchArticles(String query, ArrayList<String> filterQuery,
                                                                                      String beginDate, String endDate) {
 
         NYTService nytService = NYTService.retrofitArticleSearch.create(NYTService.class);
