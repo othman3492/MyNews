@@ -7,7 +7,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/articles_recycler_view"
+        android:id="@+id/articles_search_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

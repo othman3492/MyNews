@@ -143,51 +143,58 @@ public class SearchActivity extends AppCompatActivity {
 
     public void configureSearchButton() {
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String query = searchQuery.getText().toString();
-                ArrayList<String> filterQuery = new ArrayList<>();
-                String beginDateConverted = null;
-                String endDateConverted = null;
+        searchButton.setOnClickListener(v -> {
 
 
-                // If there's at least a word typed in search field
-                if (!(query.equals(""))) {
+            String query = searchQuery.getText().toString();
+            ArrayList<String> filterQuery = new ArrayList<>();
+            String beginDateConverted;
+            String endDateConverted;
 
-                    // If there's at least one checkbox checked
-                    if (isCheckboxesChecked()) {
 
-                        if (beginDate != null) {
-                            beginDateConverted = DateConverter.convertDatePicker(beginDate.getText().toString());
-                        } else if (endDate != null) {
-                            endDateConverted = DateConverter.convertDatePicker(endDate.getText().toString());
-                        }
+            // If there's at least a word typed in search field
+            if (!(query.equals(""))) {
 
-                        for (CheckBox checkBox : checkBoxList) {
-                            if (checkBox.isChecked())
-                                filterQuery.add(checkBox.getTag().toString());
-                            Log.d("TAG", checkBox.getText().toString());
-                        }
+                // If there's at least one checkbox checked
+                if (isCheckboxesChecked()) {
 
-                        Intent intent = new Intent(SearchActivity.this, ArticlesFragment.class);
-                        intent.putExtra("QUERY", query);
-                        intent.putStringArrayListExtra("FILTER_QUERY", filterQuery);
-                        intent.putExtra("BEGIN_DATE", beginDateConverted);
-                        intent.putExtra("END_DATE", endDateConverted);
-
-                        ArticlesFragment.newInstance(10);
-
+                    // Convert date format if dates are selected
+                    if (beginDate != null) {
+                        beginDateConverted = DateConverter.convertDatePicker(beginDate.getText().toString());
                     } else {
-                        Toast.makeText(getApplicationContext(), "Select at least one category", Toast.LENGTH_SHORT).show();
+                        beginDateConverted = "";
                     }
+
+                    if (endDate != null) {
+                        endDateConverted = DateConverter.convertDatePicker(endDate.getText().toString());
+                    } else {
+                        endDateConverted = "";
+                    }
+
+                    // Add section names to a list of filter queries
+                    for (CheckBox checkBox : this.checkBoxList) {
+                        if (checkBox.isChecked())
+                            filterQuery.add(checkBox.getTag().toString());
+                        Log.d("TAG CHECKBOXES", checkBox.getTag().toString());
+                    }
+
+                    // Save search parameters and start SearchResults Activity to display results
+                    Intent intent = new Intent(SearchActivity.this, SearchResultsActivity.class);
+                    intent.putExtra("QUERY", query);
+                    intent.putStringArrayListExtra("FILTER_QUERY", filterQuery);
+                    intent.putExtra("BEGIN_DATE", beginDateConverted);
+                    intent.putExtra("END_DATE", endDateConverted);
+                    startActivity(intent);
+
+
                 } else {
-                    Toast.makeText(getApplicationContext(), "Type a query in the search field", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Select at least one category", Toast.LENGTH_SHORT).show();
                 }
-
-
+            } else {
+                Toast.makeText(getApplicationContext(), "Type a query in the search field", Toast.LENGTH_SHORT).show();
             }
+
+
         });
 
     }

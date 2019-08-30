@@ -94,6 +94,7 @@ public class NotificationsActivity extends AppCompatActivity {
     public void configureSwitch() {
 
         String query = searchQuery.getText().toString();
+        ArrayList<String> filterQuery = new ArrayList<>();
 
         notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 

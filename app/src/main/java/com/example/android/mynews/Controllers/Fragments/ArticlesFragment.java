@@ -143,32 +143,6 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
-    // Execute Article Search API request and retrieve an array of articles corresponding to the search query
-    private void executeArticleSearchRequest(String query, ArrayList<String> filterQuery, String beginDate, String endDate) {
-
-        this.disposable = NYTStreams.streamFetchArticleSearchArticles(query, filterQuery, beginDate, endDate)
-                .subscribeWith(new DisposableObserver<ArticleSearchArticles>() {
-                    @Override
-                    public void onNext(ArticleSearchArticles articleSearchArticles) {
-
-                        Log.e("TAG", "On Next");
-                        updateArticleList(createArticleSearchList(articleSearchArticles.getResponse().getDocs()));
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        Log.e("TAG", "On Error" + Log.getStackTraceString(e));
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                        Log.e("TAG", "On Complete");
-                    }
-                });
-    }
-
 
     // Create a list of Article objects from retrieved Top Stories articles results
     private List<Article> createTopStoriesList(List<TopStoriesArticles.Result> topStoriesList) {
@@ -201,27 +175,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     }
 
 
-    // Create a list a Article objects from retrieved Article Search articles results
-    private List<Article> createArticleSearchList(List<ArticleSearchArticles.Doc> articleSearchList) {
 
-        List<Article> articleList = new ArrayList<>();
-
-        for (ArticleSearchArticles.Doc result : articleSearchList) {
-
-            Article article = new Article().createArticleFromArticleSearch(result);
-            articleList.add(article);
-        }
-
-        return articleList;
-    }
-
-
-    // Fill the Article list displayed in the RecyclerView with data from the API request
-    private void updateArticleList(List<Article> articlesList) {
-
-        this.articlesList.addAll(articlesList);
-        this.adapter.notifyDataSetChanged();
-    }
 
 
     // Update fragment with data from the right API request depending on page displayed
@@ -258,16 +212,6 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
             case 9 :
                 executeTopStoriesRequest("automobiles");
                 break;
-            case 10 :
-
-                Intent intent = new Intent();
-                String query = intent.getStringExtra("QUERY");
-                ArrayList<String> filterQuery = intent.getStringArrayListExtra("FILTER_QUERY");
-                String beginDate = intent.getStringExtra("BEGIN_DATE");
-                String endDate = intent.getStringExtra("END_DATE");
-
-                executeArticleSearchRequest(query, filterQuery, beginDate, endDate);
-                break;
         }
     }
 
@@ -297,6 +241,14 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
         String url = articlesList.get(position).getUrl();
         intent.putExtra("URL", url);
         startActivity(intent);
+    }
+
+
+    // Fill the Article list displayed in the RecyclerView with data from the API request
+    public void updateArticleList(List<Article> articlesList) {
+
+        this.articlesList.addAll(articlesList);
+        this.adapter.notifyDataSetChanged();
     }
 
 
