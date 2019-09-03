@@ -7,7 +7,6 @@ import com.example.android.mynews.Models.MostPopularArticles;
 import com.example.android.mynews.Models.TopStoriesArticles;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
@@ -21,7 +20,7 @@ import retrofit2.http.Query;
 
 // Make HTTP requests on New York Times API
 
-public interface NYTService {
+interface NYTService {
 
 
 
@@ -50,14 +49,26 @@ public interface NYTService {
             .build();
 
 
-    // Article Search API request
+    // Article Search API request with date
     @GET("svc/search/v2/articlesearch.json?api-key=" + API_KEY)
-    Observable<ArticleSearchArticles> getArticleSearch(@Query("q") String query,
-                                                       @Query("fq") ArrayList<String> filterQuery,
+    Observable<ArticleSearchArticles> getArticleSearchWithDate(@Query("q") String query,
+                                                       @Query("fq") String filterQuery,
                                                        @Query("begin_date") String beginDate,
                                                        @Query("end_date") String endDate);
 
-    Retrofit retrofitArticleSearch = new Retrofit.Builder()
+    Retrofit retrofitArticleSearchWithDate = new Retrofit.Builder()
+            .baseUrl("http://api.nytimes.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build();
+
+
+    // Article Search API request without date
+    @GET("svc/search/v2/articlesearch.json?api-key=" + API_KEY)
+    Observable<ArticleSearchArticles> getArticleSearchWithoutDate(@Query("q") String query,
+                                                                  @Query("fq") String filterQuery);
+
+    Retrofit retrofitArticleSearchWithoutDate = new Retrofit.Builder()
             .baseUrl("http://api.nytimes.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

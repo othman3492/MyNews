@@ -5,7 +5,6 @@ import com.example.android.mynews.Models.MostPopularArticles;
 import com.example.android.mynews.Models.TopStoriesArticles;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -41,12 +40,23 @@ public class NYTStreams {
     }
 
 
-    public static Observable<ArticleSearchArticles> streamFetchArticleSearchArticles(String query, ArrayList<String> filterQuery,
+    public static Observable<ArticleSearchArticles> streamFetchArticleSearchWithDate(String query, String filterQuery,
                                                                                      String beginDate, String endDate) {
 
-        NYTService nytService = NYTService.retrofitArticleSearch.create(NYTService.class);
+        NYTService nytService = NYTService.retrofitArticleSearchWithDate.create(NYTService.class);
 
-        return nytService.getArticleSearch(query, filterQuery, beginDate, endDate)
+        return nytService.getArticleSearchWithDate(query, filterQuery, beginDate, endDate)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .timeout(10, TimeUnit.SECONDS);
+    }
+
+
+    public static Observable<ArticleSearchArticles> streamFetchArticleSearchWithoutDate(String query, String filterQuery) {
+
+        NYTService nytService = NYTService.retrofitArticleSearchWithoutDate.create(NYTService.class);
+
+        return nytService.getArticleSearchWithoutDate(query, filterQuery)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(10, TimeUnit.SECONDS);

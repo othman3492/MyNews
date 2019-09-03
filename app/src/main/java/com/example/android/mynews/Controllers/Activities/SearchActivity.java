@@ -1,21 +1,19 @@
 package com.example.android.mynews.Controllers.Activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.android.mynews.Controllers.Fragments.ArticlesFragment;
 import com.example.android.mynews.R;
 import com.example.android.mynews.Utils.DateConverter;
 
@@ -23,12 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.text.InputType.TYPE_DATETIME_VARIATION_DATE;
 import static android.text.InputType.TYPE_NULL;
 
 // Activity displaying the article search layout
@@ -63,7 +59,11 @@ public class SearchActivity extends AppCompatActivity {
     @BindView(R.id.notification_switch)
     Switch notificationSwitch;
 
-    ArrayList<CheckBox> checkBoxList;
+    private ArrayList<CheckBox> checkBoxList;
+    private String query;
+    private ArrayList<String> filterQuery;
+    private String beginDateConverted;
+    private String endDateConverted;
 
 
     @Override
@@ -81,7 +81,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
     // Configure DatePicker Dialogs to select begin and end dates when using Article Search
-    public void configureDatePickers() {
+    private void configureDatePickers() {
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -91,14 +91,11 @@ public class SearchActivity extends AppCompatActivity {
         int year = calendar.get(Calendar.YEAR);
 
         beginDate.setInputType(TYPE_NULL);
-        beginDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        beginDate.setOnClickListener(v -> {
 
-                DatePickerDialog datePicker = new DatePickerDialog(v.getContext(),
-                        (view, year1, monthOfYear, dayOfMonth) -> beginDate.setText(dateFormat.format(new Date(year1 - 1900, monthOfYear, dayOfMonth))), year, month, day);
-                datePicker.show();
-            }
+            DatePickerDialog datePicker = new DatePickerDialog(v.getContext(),
+                    (view, year1, monthOfYear, dayOfMonth) -> beginDate.setText(dateFormat.format(new Date(year1 - 1900, monthOfYear, dayOfMonth))), year, month, day);
+            datePicker.show();
         });
 
         endDate.setInputType(TYPE_NULL);
@@ -111,7 +108,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    public ArrayList<CheckBox> createCheckboxList() {
+    private ArrayList<CheckBox> createCheckboxList() {
 
         checkBoxList = new ArrayList<>();
 
@@ -129,7 +126,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
     // Create a list of checkboxes and verify if at least one is checked
-    public boolean isCheckboxesChecked() {
+    private boolean isCheckboxesChecked() {
 
         ArrayList<CheckBox> checkBoxes = createCheckboxList();
 
@@ -141,15 +138,13 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    public void configureSearchButton() {
+    private void configureSearchButton() {
 
         searchButton.setOnClickListener(v -> {
 
 
-            String query = searchQuery.getText().toString();
-            ArrayList<String> filterQuery = new ArrayList<>();
-            String beginDateConverted;
-            String endDateConverted;
+            query = searchQuery.getText().toString();
+            filterQuery = new ArrayList<>();
 
 
             // If there's at least a word typed in search field
@@ -159,29 +154,31 @@ public class SearchActivity extends AppCompatActivity {
                 if (isCheckboxesChecked()) {
 
                     // Convert date format if dates are selected
-                    if (beginDate != null) {
+                    if (!beginDate.getText().toString().isEmpty()) {
                         beginDateConverted = DateConverter.convertDatePicker(beginDate.getText().toString());
                     } else {
                         beginDateConverted = "";
                     }
 
-                    if (endDate != null) {
+                    if (!endDate.getText().toString().isEmpty()) {
                         endDateConverted = DateConverter.convertDatePicker(endDate.getText().toString());
                     } else {
                         endDateConverted = "";
                     }
 
                     // Add section names to a list of filter queries
-                    for (CheckBox checkBox : this.checkBoxList) {
+                    for (CheckBox checkBox : checkBoxList) {
                         if (checkBox.isChecked())
-                            filterQuery.add(checkBox.getTag().toString());
-                        Log.d("TAG CHECKBOXES", checkBox.getTag().toString());
+                            filterQuery.add(checkBox.getText().toString());
                     }
+
+                    // Convert ArrayList to String to get request parameters
+                    String fq = TextUtils.join(" ", filterQuery);
 
                     // Save search parameters and start SearchResults Activity to display results
                     Intent intent = new Intent(SearchActivity.this, SearchResultsActivity.class);
                     intent.putExtra("QUERY", query);
-                    intent.putStringArrayListExtra("FILTER_QUERY", filterQuery);
+                    intent.putExtra("FILTER_QUERY", fq);
                     intent.putExtra("BEGIN_DATE", beginDateConverted);
                     intent.putExtra("END_DATE", endDateConverted);
                     startActivity(intent);

@@ -1,21 +1,14 @@
 <resources>
     <string name="app_name">MyNews</string>
-    <string name="tab_text_1">TOP STORIES</string>
-    <string name="tab_text_2">MOST POPULAR</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="search">Search</string>
-    <string name="more">More</string>
-    <string name="search_edit_text">Search...</string>
+    <string name="search_edit_text">Search…</string>
     <string name="begin_date">Begin Date</string>
     <string name="end_date">End Date</string>
-    <string name="arts">Arts</string>
-    <string name="entrepreneurs">Entrepreneurs</string>
-    <string name="travel">Travel</string>
     <string name="search_button">SEARCH</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="automobiles">Automobiles</string>
     <string name="national">National</string>
     <string name="politics">Politics</string>
@@ -24,7 +17,6 @@
     <string name="technology">Technology</string>
     <string name="world">World</string>
     <string name="business">Business</string>
-    <string name="mynews_title">MYNEWS</string>
     <string name="logo">logo</string>
     <string name="article_image">Article Image</string>
     <string name="enable_notifications">Enable notifications</string>

@@ -3,9 +3,6 @@ package com.example.android.mynews.Controllers.Activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-
-import com.example.android.mynews.Models.Article;
 import com.example.android.mynews.R;
 
 import butterknife.BindView;

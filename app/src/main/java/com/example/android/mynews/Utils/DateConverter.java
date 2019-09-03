@@ -14,7 +14,7 @@ public class DateConverter {
 
     // Convert API date format to a clearer pattern
 
-    public static String ConvertDate(String nytDate) {
+    public static String convertDate(String nytDate) {
 
 
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);

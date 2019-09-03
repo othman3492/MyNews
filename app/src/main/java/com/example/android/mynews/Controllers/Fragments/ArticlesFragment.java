@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.example.android.mynews.Controllers.Activities.ArticleActivity;
 import com.example.android.mynews.Models.Article;
-import com.example.android.mynews.Models.ArticleSearchArticles;
 import com.example.android.mynews.Models.MostPopularArticles;
 import com.example.android.mynews.Models.TopStoriesArticles;
 import com.example.android.mynews.R;
@@ -24,9 +22,7 @@ import com.example.android.mynews.Views.ArticlesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
@@ -224,7 +220,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
 
 
     // Configure RecyclerView to display articles
-    public void configureRecyclerView(View v) {
+    private void configureRecyclerView(View v) {
 
         RecyclerView recyclerView = v.findViewById(R.id.articles_recycler_view);
         this.adapter = new ArticlesAdapter(this.articlesList, this);
@@ -245,7 +241,7 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
 
 
     // Fill the Article list displayed in the RecyclerView with data from the API request
-    public void updateArticleList(List<Article> articlesList) {
+    private void updateArticleList(List<Article> articlesList) {
 
         this.articlesList.addAll(articlesList);
         this.adapter.notifyDataSetChanged();

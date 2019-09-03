@@ -29,8 +29,8 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
     }
 
 
-    private List<Article> articlesList;
-    private RecyclerViewOnClickListener listener;
+    private final List<Article> articlesList;
+    private final RecyclerViewOnClickListener listener;
 
 
     public ArticlesAdapter(List<Article> articlesList, RecyclerViewOnClickListener listener) {
@@ -78,7 +78,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         @BindView(R.id.article_title)
         TextView articleTitle;
 
-        RecyclerViewOnClickListener recyclerViewOnClickListener;
+        final RecyclerViewOnClickListener recyclerViewOnClickListener;
 
 
         ArticlesViewHolder(View view, RecyclerViewOnClickListener listener) {

@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 
-import com.example.android.mynews.Controllers.Fragments.ArticlesFragment;
 import com.example.android.mynews.Models.Article;
 import com.example.android.mynews.Models.ArticleSearchArticles;
 import com.example.android.mynews.R;
@@ -18,7 +16,6 @@ import com.example.android.mynews.Views.ArticlesAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
@@ -32,7 +29,7 @@ public class SearchResultsActivity extends AppCompatActivity implements Articles
     private String query;
     private String beginDate;
     private String endDate;
-    private ArrayList<String> filterQuery;
+    private String filterQuery;
 
 
     @Override
@@ -55,7 +52,7 @@ public class SearchResultsActivity extends AppCompatActivity implements Articles
 
 
     // Configure RecyclerView to display articles
-    public void configureRecyclerView() {
+    private void configureRecyclerView() {
 
         searchResultsList = new ArrayList<>();
 
@@ -82,35 +79,64 @@ public class SearchResultsActivity extends AppCompatActivity implements Articles
 
         getQueryData();
 
-        this.disposable = NYTStreams.streamFetchArticleSearchArticles(query, filterQuery, beginDate, endDate)
-                .subscribeWith(new DisposableObserver<ArticleSearchArticles>() {
-                    @Override
-                    public void onNext(ArticleSearchArticles articleSearchArticles) {
+        // Call the right API Search request depending on dates selected or not
+        if (beginDate.length() > 0 && endDate.length() > 0) {
 
-                        Log.e("TAG", "On Next");
-                        updateArticleList(createArticleSearchList(articleSearchArticles.getResponse().getDocs()));
-                    }
+            this.disposable = NYTStreams.streamFetchArticleSearchWithDate(query, filterQuery, beginDate, endDate)
+                    .subscribeWith(new DisposableObserver<ArticleSearchArticles>() {
+                        @Override
+                        public void onNext(ArticleSearchArticles articleSearchArticles) {
 
-                    @Override
-                    public void onError(Throwable e) {
+                            Log.e("TAG", "On Next");
+                            updateArticleList(createArticleSearchList(articleSearchArticles.getResponse().getDocs()));
+                        }
 
-                        Log.e("TAG", "On Error" + Log.getStackTraceString(e));
-                    }
+                        @Override
+                        public void onError(Throwable e) {
 
-                    @Override
-                    public void onComplete() {
+                            Log.e("TAG", "On Error" + Log.getStackTraceString(e));
+                        }
 
-                        Log.e("TAG", "On Complete");
-                    }
-                });
+                        @Override
+                        public void onComplete() {
+
+                            Log.e("TAG", "On Complete");
+                        }
+                    });
+        } else {
+
+            this.disposable = NYTStreams.streamFetchArticleSearchWithoutDate(query, filterQuery)
+                    .subscribeWith(new DisposableObserver<ArticleSearchArticles>() {
+                        @Override
+                        public void onNext(ArticleSearchArticles articleSearchArticles) {
+
+                            Log.e("TAG", "On Next");
+                            updateArticleList(createArticleSearchList(articleSearchArticles.getResponse().getDocs()));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                            Log.e("TAG", "On Error" + Log.getStackTraceString(e));
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                            Log.e("TAG", "On Complete");
+                        }
+                    });
+
+        }
     }
 
 
+    // Get all data from search queries
     private void getQueryData() {
 
-        Intent intent = new Intent();
+        Intent intent = getIntent();
         query = intent.getStringExtra("QUERY");
-        filterQuery = intent.getStringArrayListExtra("FILTER_QUERY");
+        filterQuery = intent.getStringExtra("FILTER_QUERY");
         beginDate = intent.getStringExtra("BEGIN_DATE");
         endDate = intent.getStringExtra("END_DATE");
 
@@ -140,7 +166,7 @@ public class SearchResultsActivity extends AppCompatActivity implements Articles
 
 
     // Fill the Article list displayed in the RecyclerView with data from the API request
-    public void updateArticleList(List<Article> articlesList) {
+    private void updateArticleList(List<Article> articlesList) {
 
         this.searchResultsList.addAll(articlesList);
         this.adapter.notifyDataSetChanged();
