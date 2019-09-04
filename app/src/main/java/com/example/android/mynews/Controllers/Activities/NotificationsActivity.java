@@ -129,15 +129,25 @@ public class NotificationsActivity extends AppCompatActivity {
     // Get data from last search and display it
     private void getSharedPreferences() {
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Get size of saved filter list
+        int listSize = preferences.getInt("LIST_SIZE", 0);
+
         // Get last query and put it in the search field
         searchQuery.setText(preferences.getString("QUERY", ""));
 
         // Get last checked checkboxes and check them
-        for (CheckBox checkBox : checkBoxList) {
+        createCheckboxList();
 
-            String checkboxName = preferences.getString("FILTER_QUERIES" + checkBoxList.indexOf(checkBox), null);
-            if (checkboxName != null && checkboxName.equals(checkBox.getText().toString()))
-                checkBox.setChecked(true);
+        for (int i = 0; i < listSize; i++) {
+
+            for (CheckBox checkBox : checkBoxList) {
+
+                String checkboxName = preferences.getString("FILTER_QUERIES" + i, null);
+                if (checkboxName != null && checkboxName.equals(checkBox.getText().toString()))
+                    checkBox.setChecked(true);
+            }
         }
 
     }
@@ -281,16 +291,16 @@ public class NotificationsActivity extends AppCompatActivity {
             channel.setDescription(description);
 
             NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
-                notificationManager.createNotificationChannel(channel);
-            }
-
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), "NewsChannel")
-                    .setContentTitle("MyNews")
-                    .setContentText("example")
-                    .setAutoCancel(true);
-
-            notificationBuilder.build();
-
+            notificationManager.createNotificationChannel(channel);
         }
 
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), "NewsChannel")
+                .setContentTitle("MyNews")
+                .setContentText("example")
+                .setAutoCancel(true);
+
+        notificationBuilder.build();
+
     }
+
+}
