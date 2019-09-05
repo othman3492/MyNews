@@ -81,7 +81,6 @@ public class NotificationsActivity extends AppCompatActivity {
     private int nbResults;
 
     private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
 
 
     @Override
@@ -214,11 +213,12 @@ public class NotificationsActivity extends AppCompatActivity {
                             // Convert ArrayList to String to get request parameters
                             fq = TextUtils.join(" ", filterQuery);
 
+                            //Execute API request and get the number of results
+                            executeArticleSearchRequest();
+
                             //Configure AlarmManager to activate notifications
                             configureAlarmManager();
 
-                            //Execute API request and get the number of results
-                            executeArticleSearchRequest();
 
                         } else {
                             Toast.makeText(getApplicationContext(), "Select at least one category", Toast.LENGTH_SHORT).show();
@@ -266,15 +266,17 @@ public class NotificationsActivity extends AppCompatActivity {
     // Create the AlarmManager to plan the notification to be called every day
     private void configureAlarmManager() {
 
+
         // Set the alarm to start at noon
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 12);
 
-        Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
+        Intent intent = new Intent(NotificationsActivity.this, NotificationReceiver.class);
         intent.putExtra("QUERY", query);
-        intent.putExtra("FILTER_QUERY", fq);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra("NB_RESULTS", nbResults);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
@@ -297,6 +299,7 @@ public class NotificationsActivity extends AppCompatActivity {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), "NewsChannel")
                 .setContentTitle("MyNews")
                 .setContentText("example")
+                .setSmallIcon(R.drawable.baseline_notifications_white_24)
                 .setAutoCancel(true);
 
         notificationBuilder.build();
