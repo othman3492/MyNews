@@ -1,17 +1,11 @@
 package com.example.android.mynews.Controllers.Activities;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -32,7 +25,6 @@ import com.example.android.mynews.Utils.NotificationReceiver;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,6 +66,7 @@ public class NotificationsActivity extends AppCompatActivity {
     @BindView(R.id.notification_switch)
     Switch notificationSwitch;
 
+    private Disposable disposable;
     private ArrayList<CheckBox> checkBoxList;
     private String query;
     private ArrayList<String> filterQuery;
@@ -122,6 +115,9 @@ public class NotificationsActivity extends AppCompatActivity {
         // Save all filter queries
         for (String filter : filterQuery)
             preferences.edit().putString("FILTER_QUERIES" + filterQuery.indexOf(filter), filter).apply();
+
+        // Save notifications switch state
+        preferences.edit().putBoolean("SWITCH_CHECKED", true).apply();
     }
 
 
@@ -129,6 +125,10 @@ public class NotificationsActivity extends AppCompatActivity {
     private void getSharedPreferences() {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Get switch state
+        boolean isSwitchChecked = preferences.getBoolean("SWITCH_CHECKED", false);
+        notificationSwitch.setChecked(isSwitchChecked);
 
         // Get size of saved filter list
         int listSize = preferences.getInt("LIST_SIZE", 0);
@@ -185,51 +185,51 @@ public class NotificationsActivity extends AppCompatActivity {
     // Configure notifications switch to alert user when query field is empty or no checkboxes are checked
     private void configureSwitch() {
 
-        notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
 
-                query = searchQuery.getText().toString();
-                filterQuery = new ArrayList<>();
+            query = searchQuery.getText().toString();
+            filterQuery = new ArrayList<>();
 
-                if (isChecked) {
+            if (isChecked) {
 
-                    // If there's at least a word typed in search field
-                    if (!(query.isEmpty())) {
+                // If there's at least a word typed in search field
+                if (!(query.isEmpty())) {
 
-                        // If there's at least one checkbox checked
-                        if (isCheckboxesChecked()) {
+                    // If there's at least one checkbox checked
+                    if (isCheckboxesChecked()) {
 
-                            // Add section names to a list of filter queries
-                            for (CheckBox checkBox : checkBoxList) {
-                                if (checkBox.isChecked())
-                                    filterQuery.add(checkBox.getText().toString());
-                            }
-
-                            // Save data into shared preferences
-                            saveSharedPreferences();
-
-                            // Convert ArrayList to String to get request parameters
-                            fq = TextUtils.join(" ", filterQuery);
-
-                            //Execute API request and get the number of results
-                            executeArticleSearchRequest();
-
-                            //Configure AlarmManager to activate notifications
-                            configureAlarmManager();
-
-
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Select at least one category", Toast.LENGTH_SHORT).show();
-                            buttonView.setChecked(false);
+                        // Add section names to a list of filter queries
+                        for (CheckBox checkBox : checkBoxList) {
+                            if (checkBox.isChecked())
+                                filterQuery.add(checkBox.getText().toString());
                         }
 
+                        // Save data into shared preferences
+                        saveSharedPreferences();
+
+                        // Convert ArrayList to String to get request parameters
+                        fq = TextUtils.join(" ", filterQuery);
+
+                        //Execute API request and get the number of results
+                        executeArticleSearchRequest();
+
+                        //Configure AlarmManager to activate notifications
+                        configureAlarmManager();
+
+
                     } else {
-                        Toast.makeText(NotificationsActivity.this.getApplicationContext(), "Type a query in the search field", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Select at least one category", Toast.LENGTH_SHORT).show();
                         buttonView.setChecked(false);
                     }
+
+                } else {
+                    Toast.makeText(NotificationsActivity.this.getApplicationContext(), "Type a query in the search field", Toast.LENGTH_SHORT).show();
+                    buttonView.setChecked(false);
                 }
+            } else {
+
+                preferences.edit().clear().apply();
             }
         });
     }
@@ -239,7 +239,7 @@ public class NotificationsActivity extends AppCompatActivity {
     private void executeArticleSearchRequest() {
 
 
-        Disposable disposable = NYTStreams.streamFetchArticleSearchWithoutDate(query, fq)
+        this.disposable = NYTStreams.streamFetchArticleSearchWithoutDate(query, fq)
                 .subscribeWith(new DisposableObserver<ArticleSearchArticles>() {
                     @Override
                     public void onNext(ArticleSearchArticles articleSearchArticles) {
@@ -280,30 +280,6 @@ public class NotificationsActivity extends AppCompatActivity {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-    }
-
-
-    private void notificationTest() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "CHANNEL";
-            String description = "CHANNEL DESCRIPTION";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("NewsChannel", name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), "NewsChannel")
-                .setContentTitle("MyNews")
-                .setContentText("example")
-                .setSmallIcon(R.drawable.baseline_notifications_white_24)
-                .setAutoCancel(true);
-
-        notificationBuilder.build();
-
     }
 
 }
