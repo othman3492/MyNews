@@ -1,4 +1,4 @@
-package com.example.android.mynews.Views;
+package com.example.android.mynews.views;
 
 
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.mynews.Models.Article;
+import com.example.android.mynews.models.Article;
 import com.example.android.mynews.R;
 import com.squareup.picasso.Picasso;
 

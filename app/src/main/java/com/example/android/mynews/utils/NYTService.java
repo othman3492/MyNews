@@ -1,12 +1,10 @@
-package com.example.android.mynews.Utils;
+package com.example.android.mynews.utils;
 
 
 import com.example.android.mynews.BuildConfig;
-import com.example.android.mynews.Models.ArticleSearchArticles;
-import com.example.android.mynews.Models.MostPopularArticles;
-import com.example.android.mynews.Models.TopStoriesArticles;
-
-import java.util.ArrayList;
+import com.example.android.mynews.models.ArticleSearchArticles;
+import com.example.android.mynews.models.MostPopularArticles;
+import com.example.android.mynews.models.TopStoriesArticles;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;

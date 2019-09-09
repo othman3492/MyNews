@@ -1,4 +1,4 @@
-package com.example.android.mynews.Controllers.Activities;
+package com.example.android.mynews.controllers.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.android.mynews.Views.PageAdapter;
+import com.example.android.mynews.views.PageAdapter;
 import com.example.android.mynews.R;
 
 

@@ -1,10 +1,9 @@
-package com.example.android.mynews.Utils;
+package com.example.android.mynews.utils;
 
-import com.example.android.mynews.Models.ArticleSearchArticles;
-import com.example.android.mynews.Models.MostPopularArticles;
-import com.example.android.mynews.Models.TopStoriesArticles;
+import com.example.android.mynews.models.ArticleSearchArticles;
+import com.example.android.mynews.models.MostPopularArticles;
+import com.example.android.mynews.models.TopStoriesArticles;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;

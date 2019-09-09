@@ -1,7 +1,7 @@
-package com.example.android.mynews.Models;
+package com.example.android.mynews.models;
 
 
-import com.example.android.mynews.Utils.DateConverter;
+import com.example.android.mynews.utils.DateConverter;
 
 
 // Object used to convert every article retrieved from the API to a usable object

@@ -1,4 +1,4 @@
-package com.example.android.mynews.Controllers.Activities;
+package com.example.android.mynews.controllers.activities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,10 +17,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.mynews.Models.ArticleSearchArticles;
 import com.example.android.mynews.R;
-import com.example.android.mynews.Utils.NYTStreams;
-import com.example.android.mynews.Utils.NotificationReceiver;
+import com.example.android.mynews.utils.NotificationReceiver;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +26,6 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
 
 
 // Activity displaying the notifications layout
@@ -66,12 +62,10 @@ public class NotificationsActivity extends AppCompatActivity {
     @BindView(R.id.notification_switch)
     Switch notificationSwitch;
 
-    private Disposable disposable;
     private ArrayList<CheckBox> checkBoxList;
     private String query;
     private ArrayList<String> filterQuery;
     private String fq;
-    private int nbResults;
 
     private SharedPreferences preferences;
 
@@ -211,9 +205,6 @@ public class NotificationsActivity extends AppCompatActivity {
                         // Convert ArrayList to String to get request parameters
                         fq = TextUtils.join(" ", filterQuery);
 
-                        //Execute API request and get the number of results
-                        executeArticleSearchRequest();
-
                         //Configure AlarmManager to activate notifications
                         configureAlarmManager();
 
@@ -235,34 +226,6 @@ public class NotificationsActivity extends AppCompatActivity {
     }
 
 
-    // Execute Article Search API request and retrieve the number of corresponding articles to show in the notification
-    private void executeArticleSearchRequest() {
-
-
-        this.disposable = NYTStreams.streamFetchArticleSearchWithoutDate(query, fq)
-                .subscribeWith(new DisposableObserver<ArticleSearchArticles>() {
-                    @Override
-                    public void onNext(ArticleSearchArticles articleSearchArticles) {
-
-                        Log.e("TAG", "On Next");
-                        nbResults = articleSearchArticles.getResponse().getDocs().size();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        Log.e("TAG", "On Error" + Log.getStackTraceString(e));
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                        Log.e("TAG", "On Complete");
-                    }
-                });
-    }
-
-
     // Create the AlarmManager to plan the notification to be called every day
     private void configureAlarmManager() {
 
@@ -274,12 +237,14 @@ public class NotificationsActivity extends AppCompatActivity {
 
         Intent intent = new Intent(NotificationsActivity.this, NotificationReceiver.class);
         intent.putExtra("QUERY", query);
-        intent.putExtra("NB_RESULTS", nbResults);
+        intent.putExtra("FILTER_QUERY", fq);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        if (alarmManager != null) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
     }
 
 }

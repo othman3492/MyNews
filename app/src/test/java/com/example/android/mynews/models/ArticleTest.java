@@ -1,10 +1,6 @@
-package com.example.android.mynews.Models;
+package com.example.android.mynews.models;
 
-import com.example.android.mynews.Models.Article;
-import com.example.android.mynews.Models.ArticleSearchArticles;
-import com.example.android.mynews.Models.MostPopularArticles;
-import com.example.android.mynews.Models.TopStoriesArticles;
-import com.example.android.mynews.Utils.DateConverter;
+import com.example.android.mynews.utils.DateConverter;
 
 import org.junit.Before;
 import org.junit.Test;

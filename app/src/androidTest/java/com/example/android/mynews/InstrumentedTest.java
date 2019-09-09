@@ -1,10 +1,9 @@
 package com.example.android.mynews;
 
-import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.android.mynews.Controllers.Activities.MainActivity;
+import com.example.android.mynews.controllers.activities.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

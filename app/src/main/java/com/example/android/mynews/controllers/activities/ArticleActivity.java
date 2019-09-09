@@ -1,4 +1,4 @@
-package com.example.android.mynews.Controllers.Activities;
+package com.example.android.mynews.controllers.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

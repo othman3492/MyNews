@@ -1,4 +1,4 @@
-package com.example.android.mynews.Utils;
+package com.example.android.mynews.utils;
 
 import org.junit.Test;
 

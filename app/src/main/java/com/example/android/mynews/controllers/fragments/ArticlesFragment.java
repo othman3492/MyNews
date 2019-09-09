@@ -1,4 +1,4 @@
-package com.example.android.mynews.Controllers.Fragments;
+package com.example.android.mynews.controllers.fragments;
 
 
 import android.content.Intent;
@@ -12,13 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.mynews.Controllers.Activities.ArticleActivity;
-import com.example.android.mynews.Models.Article;
-import com.example.android.mynews.Models.MostPopularArticles;
-import com.example.android.mynews.Models.TopStoriesArticles;
+import com.example.android.mynews.controllers.activities.ArticleActivity;
+import com.example.android.mynews.models.Article;
+import com.example.android.mynews.models.MostPopularArticles;
+import com.example.android.mynews.models.TopStoriesArticles;
 import com.example.android.mynews.R;
-import com.example.android.mynews.Utils.NYTStreams;
-import com.example.android.mynews.Views.ArticlesAdapter;
+import com.example.android.mynews.utils.NYTStreams;
+import com.example.android.mynews.views.ArticlesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

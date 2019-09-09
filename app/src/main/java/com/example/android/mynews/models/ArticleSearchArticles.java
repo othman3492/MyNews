@@ -1,5 +1,5 @@
 
-package com.example.android.mynews.Models;
+package com.example.android.mynews.models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -12,10 +12,6 @@ public class ArticleSearchArticles {
 
     public Response getResponse() {
         return mResponse;
-    }
-
-    public void setResponse(Response response) {
-        mResponse = response;
     }
 
 
@@ -40,10 +36,6 @@ public class ArticleSearchArticles {
 
         public List<Doc> getDocs() {
             return mDocs;
-        }
-
-        public void setDocs(List<Doc> docs) {
-            mDocs = docs;
         }
 
     }

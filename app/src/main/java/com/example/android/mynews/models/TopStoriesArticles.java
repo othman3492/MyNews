@@ -1,5 +1,5 @@
 
-package com.example.android.mynews.Models;
+package com.example.android.mynews.models;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;

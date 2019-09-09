@@ -1,4 +1,4 @@
-package com.example.android.mynews.Controllers.Activities;
+package com.example.android.mynews.controllers.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +7,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.example.android.mynews.Models.Article;
-import com.example.android.mynews.Models.ArticleSearchArticles;
+import com.example.android.mynews.models.Article;
+import com.example.android.mynews.models.ArticleSearchArticles;
 import com.example.android.mynews.R;
-import com.example.android.mynews.Utils.NYTStreams;
-import com.example.android.mynews.Views.ArticlesAdapter;
+import com.example.android.mynews.utils.NYTStreams;
+import com.example.android.mynews.views.ArticlesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
