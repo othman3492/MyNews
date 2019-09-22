@@ -4,10 +4,14 @@ package com.example.android.mynews.controllers.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.idling.CountingIdlingResource;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,10 +41,14 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     private List<Article> articlesList;
     private ArticlesAdapter adapter;
 
+    // Create idling resource to force Espresso test to wait until API request is done
+    @VisibleForTesting
+    private static CountingIdlingResource idlingResource;
+
 
     public ArticlesFragment() {
 
-
+        this.configureEspressoIdlingResource();
     }
 
 
@@ -178,6 +186,8 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
     // Update fragment with data from the right API request depending on page displayed
     private void displayPage() {
 
+        this.incrementIdlingResource();
+
         switch (fragmentId) {
             case 0 :
                 executeTopStoriesRequest("home");
@@ -247,6 +257,34 @@ public class ArticlesFragment extends Fragment implements ArticlesAdapter.Recycl
 
         this.articlesList.addAll(articlesList);
         this.adapter.notifyDataSetChanged();
+        this.decrementIdlingResource();
+    }
+
+
+    // Configure idling resource to force Espresso test to wait until API request is done
+    @VisibleForTesting
+    private void configureEspressoIdlingResource() {
+
+        if (idlingResource == null && IdlingRegistry.getInstance().getResources().size() > 0)
+            idlingResource = (CountingIdlingResource) IdlingRegistry.getInstance().getResources().iterator().next();
+    }
+
+
+    // Increment counter to block test while API request is pending
+    @VisibleForTesting
+    private void incrementIdlingResource() {
+
+        if (idlingResource != null)
+            idlingResource.increment();
+    }
+
+
+    // Decrement counter to let test be executed when API request is finished
+    @VisibleForTesting
+    private void decrementIdlingResource() {
+
+        if (idlingResource != null)
+            idlingResource.decrement();
     }
 
 
