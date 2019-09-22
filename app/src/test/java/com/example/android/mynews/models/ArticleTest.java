@@ -209,7 +209,7 @@ public class ArticleTest {
         assertEquals(articleFromArticleSearch.getSection(), article.getSection());
         assertEquals(articleFromArticleSearch.getTitle(), article.getTitle());
         assertEquals(articleFromArticleSearch.getUrl(), article.getUrl());
-        assertEquals(articleFromArticleSearch.getImageUrl(), article.getImageUrl());
+        assertEquals(articleFromArticleSearch.getImageUrl(), "https://static01.nyt.com" + article.getImageUrl());
     }
 
 }
