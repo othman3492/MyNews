@@ -3,7 +3,7 @@ package com.example.android.mynews.controllers.activities;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -18,7 +18,7 @@ import com.example.android.mynews.utils.DateConverter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,8 +92,11 @@ public class SearchActivity extends AppCompatActivity {
         beginDate.setOnClickListener(v -> {
 
             DatePickerDialog datePicker = new DatePickerDialog(v.getContext(),
-                    (view, year1, monthOfYear, dayOfMonth) -> beginDate.setText(dateFormat.format(new Date(year1 - 1900, monthOfYear, dayOfMonth) {
-                    })), year, month, day);
+                    (view, year1, monthOfYear, dayOfMonth) -> {
+
+                        Calendar calendar1 = new GregorianCalendar(year1, monthOfYear, dayOfMonth);
+                        beginDate.setText(dateFormat.format(calendar1.getTime()));
+                    }, year, month, day);
             datePicker.show();
         });
 
@@ -101,7 +104,11 @@ public class SearchActivity extends AppCompatActivity {
         endDate.setOnClickListener(v -> {
 
             DatePickerDialog datePicker = new DatePickerDialog(v.getContext(),
-                    (view, year2, monthOfYear, dayOfMonth) -> endDate.setText(dateFormat.format(new Date(year2 - 1900, monthOfYear, dayOfMonth))), year, month, day);
+                    (view, year2, monthOfYear, dayOfMonth) -> {
+
+                        Calendar calendar1 = new GregorianCalendar(year2, monthOfYear, dayOfMonth);
+                        endDate.setText(dateFormat.format(calendar1.getTime()));
+                    }, year, month, day);
             datePicker.show();
         });
     }

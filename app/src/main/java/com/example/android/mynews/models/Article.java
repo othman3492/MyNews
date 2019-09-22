@@ -103,8 +103,9 @@ public class Article {
         article.section = result.getSectionName();
         article.url = result.getWebUrl();
 
+        // Add string since request doesn't return complete image URL
         if (result.getMultimedia().size() != 0) {
-            article.imageUrl = result.getMultimedia().get(0).getUrl();
+            article.imageUrl = "https://static01.nyt.com/" + result.getMultimedia().get(0).getUrl();
         }
 
         return article;

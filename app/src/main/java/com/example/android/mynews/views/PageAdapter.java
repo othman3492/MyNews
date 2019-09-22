@@ -1,8 +1,9 @@
 package com.example.android.mynews.views;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.android.mynews.controllers.fragments.ArticlesFragment;
 
@@ -11,10 +12,12 @@ public class PageAdapter extends FragmentPagerAdapter {
 
     public PageAdapter(FragmentManager manager) {
 
-        super(manager);
+        super(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
     }
 
 
+    @NonNull
     @Override
     public Fragment getItem(int i) {
 

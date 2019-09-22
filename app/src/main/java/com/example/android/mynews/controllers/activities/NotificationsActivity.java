@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,7 +27,6 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.disposables.Disposable;
 
 
 // Activity displaying the notifications layout
@@ -78,7 +79,6 @@ public class NotificationsActivity extends AppCompatActivity {
 
         configureNotificationLayout();
         getSharedPreferences();
-        //notificationTest();
         configureSwitch();
 
 
@@ -179,6 +179,25 @@ public class NotificationsActivity extends AppCompatActivity {
     // Configure notifications switch to alert user when query field is empty or no checkboxes are checked
     private void configureSwitch() {
 
+        // Uncheck notification switch when search query changes
+        searchQuery.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                notificationSwitch.setChecked(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
 
@@ -191,7 +210,7 @@ public class NotificationsActivity extends AppCompatActivity {
                 if (!(query.isEmpty())) {
 
                     // If there's at least one checkbox checked
-                    if (isCheckboxesChecked()) {
+                    if (NotificationsActivity.this.isCheckboxesChecked()) {
 
                         // Add section names to a list of filter queries
                         for (CheckBox checkBox : checkBoxList) {
@@ -200,17 +219,17 @@ public class NotificationsActivity extends AppCompatActivity {
                         }
 
                         // Save data into shared preferences
-                        saveSharedPreferences();
+                        NotificationsActivity.this.saveSharedPreferences();
 
                         // Convert ArrayList to String to get request parameters
                         fq = TextUtils.join(" ", filterQuery);
 
                         //Configure AlarmManager to activate notifications
-                        configureAlarmManager();
+                        NotificationsActivity.this.configureAlarmManager();
 
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "Select at least one category", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NotificationsActivity.this.getApplicationContext(), "Select at least one category", Toast.LENGTH_SHORT).show();
                         buttonView.setChecked(false);
                     }
 
@@ -221,6 +240,8 @@ public class NotificationsActivity extends AppCompatActivity {
             } else {
 
                 preferences.edit().clear().apply();
+
+                NotificationsActivity.this.cancelAlarmManager();
             }
         });
     }
@@ -244,6 +265,19 @@ public class NotificationsActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
+    }
+
+
+    private void cancelAlarmManager() {
+
+
+        Intent intent = new Intent();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
         }
     }
 

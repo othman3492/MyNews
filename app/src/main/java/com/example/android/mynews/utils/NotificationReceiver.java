@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.android.mynews.controllers.activities.NotificationsActivity;
@@ -27,14 +27,14 @@ import io.reactivex.observers.DisposableObserver;
 public class NotificationReceiver extends BroadcastReceiver {
 
     private Context context;
-    private Disposable disposable;
     private String query;
-    private String fq;
     private int nbResults;
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        this.context = context;
 
         // Execute API request after getting queries from Notification Activity
         executeArticleSearchRequest(intent);
@@ -98,9 +98,9 @@ public class NotificationReceiver extends BroadcastReceiver {
     private void executeArticleSearchRequest(Intent intent) {
 
         query = intent.getStringExtra("QUERY");
-        fq = intent.getStringExtra("FILTER_QUERY");
+        String fq = intent.getStringExtra("FILTER_QUERY");
 
-        this.disposable = NYTStreams.streamFetchArticleSearchWithDate(query, fq, setCurrentDate(), setCurrentDate())
+        Disposable disposable = NYTStreams.streamFetchArticleSearchWithDate(query, fq, setCurrentDate(), setCurrentDate())
                 .subscribeWith(new DisposableObserver<ArticleSearchArticles>() {
                     @Override
                     public void onNext(ArticleSearchArticles articleSearchArticles) {
