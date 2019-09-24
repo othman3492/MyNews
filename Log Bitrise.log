@@ -1,0 +1,645 @@
+Agent version:	1.6.1
+Start time:	2019-09-22T10:52:04Z
+$ docker "run" "-v" "/var/run/docker.sock:/var/run/docker.sock" "-v" "/bitrise:/bitrise" "-v" "/tmp/bitrise-agent859000036:/.bitrise-config" "-e" "BITRISE_APP_SLUG=2955049fb59d033f" "-e" "BITRISE_BUILD_NUMBER=19" "-e" "GIT_REPOSITORY_URL=git@github.com:othman3492/MyNews.git" "-e" "BITRISEIO_GIT_REPOSITORY_SLUG=MyNews" "-e" "BITRISE_BUILD_TRIGGER_TIMESTAMP=1569149523" "-e" "BITRISE_BUILD_URL=https://app.bitrise.io/build/ed8571d840d619f3" "-e" "BITRISE_GIT_BRANCH=master" "-e" "BITRISE_GIT_COMMIT=0ea5224e212725ad6e51efdd58f8771f942a496c" "-e" "BITRISE_IO=true" "-e" "BITRISE_APP_URL=https://app.bitrise.io/app/2955049fb59d033f" "-e" "BITRISE_APP_TITLE=MyNews" "-e" "BITRISEIO_GIT_REPOSITORY_OWNER=othman3492" "-e" "BITRISEIO_STACK_ID=linux-docker-android" "-e" "BITRISE_BUILD_SLUG=ed8571d840d619f3" "-e" "BITRISE_GIT_MESSAGE=Correct model tests" "--privileged" "--network=host" "--name=bitrise-main-container" "bitriseio/android-ndk:pinned" "bitrise" "run" "--config" "/.bitrise-config/bitrise.yml" "--inventory" "/.bitrise-config/bitrise.secrets.yml" "--json-params-base64" "eyJ3b3JrZmxvdyI6InByaW1hcnkifQ=="
+
+  ██████╗ ██╗████████╗██████╗ ██╗███████╗███████╗
+  ██╔══██╗██║╚══██╔══╝██╔══██╗██║██╔════╝██╔════╝
+  ██████╔╝██║   ██║   ██████╔╝██║███████╗█████╗
+  ██╔══██╗██║   ██║   ██╔══██╗██║╚════██║██╔══╝
+  ██████╔╝██║   ██║   ██║  ██║██║███████║███████╗
+  ╚═════╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝╚══════╝
+
+[32;1m  version: 1.34.0[0m
+
+[36mINFO[0m[10:52:05] [33;1mbitrise runs in Secret Filtering mode[0m 
+[36mINFO[0m[10:52:05] [33;1mbitrise runs in CI mode[0m           
+[36mINFO[0m[10:52:05] Running workflow: [32;1mprimary[0m         
+
+[34;1mSwitching to workflow:[0m primary
+
++------------------------------------------------------------------------------+
+| (0) activate-ssh-key@4.0.3                                                   |
++------------------------------------------------------------------------------+
+| id: activate-ssh-key                                                         |
+| version: 4.0.3                                                               |
+| collection: https://github.com/bitrise-io/bitrise-steplib.git                |
+| toolkit: go                                                                  |
+| time: 2019-09-22T10:52:07Z                                                   |
++------------------------------------------------------------------------------+
+|                                                                              |
+[36mINFO[0m[10:52:07] Start installing (expect) with apt-get       
+[36mINFO[0m[10:52:07]  * [32;1m[OK][0m Step dependency (expect) installed, available. 
+[36mINFO[0m[10:52:07] Start installing (git) with apt-get          
+[36mINFO[0m[10:52:07]  * [32;1m[OK][0m Step dependency (git) installed, available. 
+[34;1mConfig:[0m
+- SSHRsaPrivateKey: *****
+- SSHKeySavePath: /root/.ssh/bitrise_step_activate_ssh_key
+- IsRemoveOtherIdentities: true
+- Verbose: false
+
+$ ssh-add "-l"
+Could not open a connection to your authentication agent.
+ssh_agent_check_result: 2
+ssh-agent not started
+starting a new ssh-agent and exporting connection information with envman
+$ ssh-agent
+Expose SSH_AUTH_SOCK for the new ssh-agent, with envman
+$ bash "-c" "/tmp/spawn128449804/tmp_spawn.sh"
+spawn ssh-add /root/.ssh/bitrise_step_activate_ssh_key
+Identity added: /root/.ssh/bitrise_step_activate_ssh_key (/root/.ssh/bitrise_step_activate_ssh_key)
+
+[32;1mSuccess[0m
+The SSH key was saved to /root/.ssh/bitrise_step_activate_ssh_key
+and was successfully added to ssh-agent.
+|                                                                              |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mactivate-ssh-key@4.0.3[0m                                        | 4.90 sec |
++---+---------------------------------------------------------------+----------+
+
+                                          ▼
+
++------------------------------------------------------------------------------+
+| (1) git-clone@4.0.14                                                         |
++------------------------------------------------------------------------------+
+| id: git-clone                                                                |
+| version: 4.0.14                                                              |
+| collection: https://github.com/bitrise-io/bitrise-steplib.git                |
+| toolkit: go                                                                  |
+| time: 2019-09-22T10:52:11Z                                                   |
++------------------------------------------------------------------------------+
+|                                                                              |
+[34;1mconfig:
+[0m
+- RepositoryURL: git@github.com:othman3492/MyNews.git
+- CloneIntoDir: /bitrise/src
+- Commit: 0ea5224e212725ad6e51efdd58f8771f942a496c
+- Tag: 
+- Branch: master
+- BranchDest: 
+- PRID: 0
+- PRRepositoryURL: 
+- PRMergeBranch: 
+- ResetRepository: false
+- CloneDepth: 0
+- BuildURL: https://app.bitrise.io/build/ed8571d840d619f3
+- BuildAPIToken: [REDACTED]
+- UpdateSubmodules: true
+- ManualMerge: true
+[34;1mgit "init"[0m
+Initialized empty Git repository in /bitrise/src/.git/
+[34;1mgit "remote" "add" "origin" "git@github.com:othman3492/MyNews.git"[0m
+[34;1mgit "fetch"[0m
+Warning: Permanently added 'github.com,192.30.253.113' (RSA) to the list of known hosts.
+From github.com:othman3492/MyNews
+ * [new branch]      master     -> origin/master
+[34;1mgit "checkout" "0ea5224e212725ad6e51efdd58f8771f942a496c"[0m
+Note: checking out '0ea5224e212725ad6e51efdd58f8771f942a496c'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+HEAD is now at 0ea5224... Correct model tests
+[34;1mgit "submodule" "update" "--init" "--recursive"[0m
+[34;1m
+Exporting git logs
+[0m
+=> GIT_CLONE_COMMIT_AUTHOR_EMAIL
+   value: othman3492@gmail.com
+
+=> GIT_CLONE_COMMIT_COMMITER_NAME
+   value: Othman
+
+=> GIT_CLONE_COMMIT_COMMITER_EMAIL
+   value: othman3492@gmail.com
+
+=> GIT_CLONE_COMMIT_HASH
+   value: 0ea5224e212725ad6e51efdd58f8771f942a496c
+
+=> GIT_CLONE_COMMIT_MESSAGE_SUBJECT
+   value: Correct model tests
+
+=> GIT_CLONE_COMMIT_MESSAGE_BODY
+   value: 
+
+=> GIT_CLONE_COMMIT_AUTHOR_NAME
+   value: Othman
+
+=> GIT_CLONE_COMMIT_COUNT
+   value: 31
+
+[32;1m
+Success[0m
+|                                                                              |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mgit-clone@4.0.14[0m                                              | 4.72 sec |
++---+---------------------------------------------------------------+----------+
+| Update available: 4.0.14 -> 4.0.17                                           |
++---+---------------------------------------------------------------+----------+
+
+                                          ▼
+
++------------------------------------------------------------------------------+
+| (2) cache-pull@2.0.1                                                         |
++------------------------------------------------------------------------------+
+| id: cache-pull                                                               |
+| version: 2.0.1                                                               |
+| collection: https://github.com/bitrise-io/bitrise-steplib.git                |
+| toolkit: go                                                                  |
+| time: 2019-09-22T10:52:16Z                                                   |
++------------------------------------------------------------------------------+
+|                                                                              |
+[36mINFO[0m[10:52:16] Start installing (rsync) with apt-get        
+[36mINFO[0m[10:52:16]  * [32;1m[OK][0m Step dependency (rsync) installed, available. 
+[36mINFO[0m[10:52:16] Start installing (tar) with apt-get          
+[36mINFO[0m[10:52:16]  * [32;1m[OK][0m Step dependency (tar) installed, available. 
+2019/09/22 10:52:19 Cache pull...
+2019/09/22 10:52:20 => Downloading and extracting cache archive ...
+2019/09/22 10:52:26 => [DONE]
+2019/09/22 10:52:26 => Took: 6.752223771s
+2019/09/22 10:52:26 => Finished
+|                                                                              |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mcache-pull@2.0.1[0m                                              | 11.84 sec|
++---+---------------------------------------------------------------+----------+
+| Update available: 2.0.1 -> 2.1.0                                             |
++---+---------------------------------------------------------------+----------+
+
+                                          ▼
+
++------------------------------------------------------------------------------+
+| (3) Do anything with Script step                                             |
++------------------------------------------------------------------------------+
+| id: script                                                                   |
+| version: 1.1.5                                                               |
+| collection: https://github.com/bitrise-io/bitrise-steplib.git                |
+| toolkit: bash                                                                |
+| time: 2019-09-22T10:52:28Z                                                   |
++------------------------------------------------------------------------------+
+|                                                                              |
++ echo 'Hello World!'
+Hello World!
+|                                                                              |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mDo anything with Script step[0m                                  | 1.74 sec |
++---+---------------------------------------------------------------+----------+
+
+                                          ▼
+
++------------------------------------------------------------------------------+
+| (4) install-missing-android-tools@2.3.5                                      |
++------------------------------------------------------------------------------+
+| id: install-missing-android-tools                                            |
+| version: 2.3.5                                                               |
+| collection: https://github.com/bitrise-io/bitrise-steplib.git                |
+| toolkit: go                                                                  |
+| time: 2019-09-22T10:52:30Z                                                   |
++------------------------------------------------------------------------------+
+|                                                                              |
+[36mINFO[0m[10:52:30] Start installing (golang) with apt-get       
+[36mINFO[0m[10:52:30]  * [32;1m[OK][0m Step dependency (go) installed, available. 
+
+[34;1mConfigs:[0m
+- GradlewPath: ./gradlew
+- AndroidHome: /opt/android-sdk-linux
+- NDKRevision: 
+
+[34;1mPreparation[0m
+Set executable permission for gradlew
+
+[34;1mClearing NDK environment[0m
+Unset ANDROID_NDK_HOME
+Initialize Android SDK
+Ensure android licences
+
+[34;1mEnsure required Android SDK components[0m
+
+[32;1mRequired SDK components are installed[0m
+|                                                                              |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1minstall-missing-android-tools@2.3.5[0m                           | 1.4 min  |
++---+---------------------------------------------------------------+----------+
+| Update available: 2.3.5 -> 2.3.7                                             |
++---+---------------------------------------------------------------+----------+
+
+                                          ▼
+
++------------------------------------------------------------------------------+
+| (5) android-lint@0.9.6                                                       |
++------------------------------------------------------------------------------+
+| id: android-lint                                                             |
+| version: 0.9.6                                                               |
+| collection: https://github.com/bitrise-io/bitrise-steplib.git                |
+| toolkit: go                                                                  |
+| time: 2019-09-22T10:53:52Z                                                   |
++------------------------------------------------------------------------------+
+|                                                                              |
+[34;1mConfig:
+[0m- ProjectLocation: /bitrise/src
+- ReportPathPattern: */build/reports/lint-results*.html
+- Variant: 
+- Module: 
+- Arguments: 
+- CacheLevel: only_deps
+- DeployDir: /bitrise/deploy
+
+[34;1mVariants:[0m
+
+app:
+[32;1m✓ Debug[0m
+[32;1m✓ Release[0m
+
+[34;1mRun lint:[0m
+
+[32;1m$ /bitrise/src/gradlew ":app:lintDebug" ":app:lintRelease"[0m
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:compileDebugAidl NO-SOURCE
+> Task :app:compileDebugRenderscript NO-SOURCE
+> Task :app:checkDebugManifest
+> Task :app:generateDebugBuildConfig
+> Task :app:mainApkListPersistenceDebug
+> Task :app:generateDebugResValues
+> Task :app:generateDebugResources
+> Task :app:mergeDebugResources
+> Task :app:javaPreCompileDebug
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:processDebugManifest
+> Task :app:processDebugResources
+
+> Task :app:compileDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :app:prepareLintJar
+
+> Task :app:lintDebug
+Calling mockable JAR artifact transform to create file: /root/.gradle/caches/transforms-2/files-2.1/6609c9792bc0ac5615eae1a13f59bdad/android.jar with input /opt/android-sdk-linux/platforms/android-29/android.jar
+Wrote HTML report to file:///bitrise/src/app/build/reports/lint-results-debug.html
+Wrote XML report to file:///bitrise/src/app/build/reports/lint-results-debug.xml
+
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:compileReleaseAidl NO-SOURCE
+> Task :app:compileReleaseRenderscript NO-SOURCE
+> Task :app:checkReleaseManifest
+> Task :app:generateReleaseBuildConfig
+> Task :app:mainApkListPersistenceRelease
+> Task :app:generateReleaseResValues
+> Task :app:generateReleaseResources
+> Task :app:javaPreCompileRelease
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:processReleaseManifest
+> Task :app:mergeReleaseResources
+> Task :app:processReleaseResources
+
+> Task :app:compileReleaseJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :app:lintRelease
+Wrote HTML report to file:///bitrise/src/app/build/reports/lint-results-release.html
+Wrote XML report to file:///bitrise/src/app/build/reports/lint-results-release.xml
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 6.0.
+Use '--warning-mode all' to show the individual deprecation warnings.
+See https://docs.gradle.org/5.4.1/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 1m 43s
+23 actionable tasks: 23 executed
+
+[34;1mExporting artifacts:[0m
+
+  Export [ lint-results-debug.html => $BITRISE_DEPLOY_DIR/app-lint-results-debug.html ]
+  Export [ lint-results-release.html => $BITRISE_DEPLOY_DIR/app-lint-results-release.html ]
+
+[34;1mCollecting cache:[0m
+[32;1m  Done[0m
+|                                                                              |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mandroid-lint@0.9.6[0m                                            | 1.9 min  |
++---+---------------------------------------------------------------+----------+
+
+                                          ▼
+
++------------------------------------------------------------------------------+
+| (6) android-unit-test@0.11.1                                                 |
++------------------------------------------------------------------------------+
+| id: android-unit-test                                                        |
+| version: 0.11.1                                                              |
+| collection: https://github.com/bitrise-io/bitrise-steplib.git                |
+| toolkit: go                                                                  |
+| time: 2019-09-22T10:55:45Z                                                   |
++------------------------------------------------------------------------------+
+|                                                                              |
+[34;1mConfigs:
+[0m- ProjectLocation: .
+- ReportPathPattern: *build/reports
+- ResultPathPattern: *build/test-results
+- Variant: 
+- Module: app
+- Arguments: 
+- CacheLevel: only_deps
+- IsDebug: false
+- Deploy dir: /bitrise/deploy
+
+[34;1mVariants:[0m
+
+app:
+[32;1m✓ Debug[0m
+[32;1m✓ Release[0m
+
+[34;1mRun test:[0m
+
+[32;1m$ /bitrise/src/gradlew ":app:testDebugUnitTest" ":app:testReleaseUnitTest"[0m
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:compileDebugAidl NO-SOURCE
+> Task :app:checkDebugManifest UP-TO-DATE
+> Task :app:compileDebugRenderscript NO-SOURCE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:mainApkListPersistenceDebug UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes NO-SOURCE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:compileReleaseAidl NO-SOURCE
+> Task :app:compileReleaseRenderscript NO-SOURCE
+> Task :app:checkReleaseManifest UP-TO-DATE
+> Task :app:generateReleaseBuildConfig UP-TO-DATE
+> Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :app:mainApkListPersistenceRelease UP-TO-DATE
+> Task :app:generateReleaseResValues UP-TO-DATE
+> Task :app:generateReleaseResources UP-TO-DATE
+> Task :app:mergeReleaseResources UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:compileDebugUnitTestJavaWithJavac
+> Task :app:testDebugUnitTest
+> Task :app:createReleaseCompatibleScreenManifests UP-TO-DATE
+> Task :app:processReleaseManifest UP-TO-DATE
+> Task :app:processReleaseResources UP-TO-DATE
+> Task :app:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :app:preReleaseUnitTestBuild UP-TO-DATE
+> Task :app:processReleaseJavaRes NO-SOURCE
+> Task :app:javaPreCompileReleaseUnitTest
+> Task :app:compileReleaseUnitTestJavaWithJavac
+> Task :app:processReleaseUnitTestJavaRes NO-SOURCE
+> Task :app:testReleaseUnitTest
+
+BUILD SUCCESSFUL in 7s
+26 actionable tasks: 6 executed, 20 up-to-date
+
+[34;1mExport reports:[0m
+
+  Export [ reports => $BITRISE_DEPLOY_DIR/app-reports.zip ]
+
+[34;1mExport results:[0m
+
+  Export [ test-results => $BITRISE_DEPLOY_DIR/app-test-results.zip ]
+[34;1mExport test results for test addon:[0m
+
+  Exporting test results to test addon successful [ /tmp/test_results928619470/test_result714674890 ] 
+
+[34;1mCollecting cache:[0m
+[32;1m  Done[0m
+|                                                                              |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mandroid-unit-test@0.11.1[0m                                      | 13.56 sec|
++---+---------------------------------------------------------------+----------+
+| Update available: 0.11.1 -> 1.0.0                                            |
++---+---------------------------------------------------------------+----------+
+
+                                          ▼
+
++------------------------------------------------------------------------------+
+| (7) deploy-to-bitrise-io@1.6.0                                               |
++------------------------------------------------------------------------------+
+| id: deploy-to-bitrise-io                                                     |
+| version: 1.6.0                                                               |
+| collection: https://github.com/bitrise-io/bitrise-steplib.git                |
+| toolkit: go                                                                  |
+| time: 2019-09-22T10:55:58Z                                                   |
++------------------------------------------------------------------------------+
+|                                                                              |
+[34;1mConfig:
+[0m- BuildURL: https://app.bitrise.io/build/ed8571d840d619f3
+- APIToken: [REDACTED]
+- IsCompress: false
+- ZipName: 
+- DeployPath: /bitrise/deploy
+- NotifyUserGroups: everyone
+- NotifyEmailList: 
+- IsPublicPageEnabled: true
+- PublicInstallPageMapFormat: {{range $index, $element := .}}{{if $index}}|{{end}}{{$element.File}}=>{{$element.URL}}{{end}}
+- BuildSlug: ed8571d840d619f3
+- TestDeployDir: /tmp/test_results928619470
+- AppSlug: 2955049fb59d033f
+- AddonAPIBaseURL: [REDACTED]
+- AddonAPIToken: [REDACTED]
+- DebugMode: false
+
+
+[34;1mDeploying the content of the Deploy directory separately[0m
+
+[34;1mList of files to deploy[0m
+- /bitrise/deploy/app-lint-results-debug.html
+- /bitrise/deploy/app-lint-results-release.html
+- /bitrise/deploy/app-reports.zip
+- /bitrise/deploy/app-test-results.zip
+
+[34;1mDeploying files[0m
+
+[32;1mUploading file: /bitrise/deploy/app-lint-results-debug.html[0m
+creating artifact
+  file size: 54172B
+uploading artifact
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 54172    0     0  100 54172      0   129k --:--:-- --:--:-- --:--:--  129k100 54172    0     0  100 54172      0   129k --:--:-- --:--:-- --:--:--  129k
+finishing artifact
+[33;1mis_enable_public_page is set, but public download isn't allowed for this type of file[0m
+
+[32;1mUploading file: /bitrise/deploy/app-lint-results-release.html[0m
+creating artifact
+  file size: 50808B
+uploading artifact
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 50808    0     0  100 50808      0   128k --:--:-- --:--:-- --:--:--  128k
+finishing artifact
+[33;1mis_enable_public_page is set, but public download isn't allowed for this type of file[0m
+
+[32;1mUploading file: /bitrise/deploy/app-reports.zip[0m
+creating artifact
+  file size: 46268B
+uploading artifact
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 46268    0     0  100 46268      0   122k --:--:-- --:--:-- --:--:--  123k
+finishing artifact
+[33;1mis_enable_public_page is set, but public download isn't allowed for this type of file[0m
+
+[32;1mUploading file: /bitrise/deploy/app-test-results.zip[0m
+creating artifact
+  file size: 5021B
+uploading artifact
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  5021    0     0  100  5021      0  16715 --:--:-- --:--:-- --:--:-- 16681
+finishing artifact
+[33;1mis_enable_public_page is set, but public download isn't allowed for this type of file[0m
+
+[32;1mSuccess[0m
+You can find the Artifact on Bitrise, on the Build's page: https://app.bitrise.io/build/ed8571d840d619f3
+
+[34;1mUpload test results[0m
+- uploading (2) test results
+[32;1mSuccess[0m
+|                                                                              |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mdeploy-to-bitrise-io@1.6.0[0m                                    | 9.69 sec |
++---+---------------------------------------------------------------+----------+
+| Update available: 1.6.0 -> 1.7.1                                             |
++---+---------------------------------------------------------------+----------+
+
+                                          ▼
+
++------------------------------------------------------------------------------+
+| (8) cache-push@2.2.0                                                         |
++------------------------------------------------------------------------------+
+| id: cache-push                                                               |
+| version: 2.2.0                                                               |
+| collection: https://github.com/bitrise-io/bitrise-steplib.git                |
+| toolkit: go                                                                  |
+| time: 2019-09-22T10:56:08Z                                                   |
++------------------------------------------------------------------------------+
+|                                                                              |
+[36mINFO[0m[10:56:08] Start installing (tar) with apt-get          
+[36mINFO[0m[10:56:08]  * [32;1m[OK][0m Step dependency (tar) installed, available. 
+[34;1mConfig:
+[0m- Paths: /bitrise/cache
+
+
+/root/.gradle -> /bitrise/src/gradle.deps
+/root/.kotlin -> /bitrise/src/gradle.deps
+/root/.m2 -> /bitrise/src/gradle.deps
+
+/root/.gradle -> /bitrise/src/gradle.deps
+/root/.kotlin -> /bitrise/src/gradle.deps
+/root/.m2 -> /bitrise/src/gradle.deps
+
+- IgnoredPaths: 
+
+~/.gradle/**
+~/.android/build-cache/**
+*.lock
+*.bin
+*/build/*.json
+*/build/*.html
+*/build/*.xml
+*/build/*.properties
+*/build/*/zip-cache/*
+*.log
+*.txt
+*.rawproto
+!*.ap_
+!*.apk
+
+~/.gradle/**
+~/.android/build-cache/**
+*.lock
+*.bin
+*/build/*.json
+*/build/*.html
+*/build/*.xml
+*/build/*.properties
+*/build/*/zip-cache/*
+*.log
+*.txt
+*.rawproto
+!*.ap_
+!*.apk
+
+- CacheAPIURL: [REDACTED]
+- FingerprintMethodID: file-content-hash
+- CompressArchive: false
+- DebugMode: false
+- StackID: 
+
+[34;1mCleaning paths[0m
+[33;1mpath does not exists at: /root/.kotlin[0m
+[33;1mpath does not exists at: /root/.m2[0m
+[32;1mDone in 819.200225ms
+[0m
+[34;1mChecking previous cache status[0m
+Previous cache info found at: /tmp/cache-info.json
+[32;1mDone in 83.285066ms
+[0m
+[34;1mChecking for file changes[0m
+[33;1mPrevious cache is invalid, new cache will be generated:[0m
+[33;1m0 files needs to be removed[0m
+[33;1m0 files has changed[0m
+[33;1m0 files added[0m
+[32;1mNo files found in 20.375293ms
+[0m
+Total time: 923.263317ms
+|                                                                              |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mcache-push@2.2.0[0m                                              | 4.72 sec |
++---+---------------------------------------------------------------+----------+
+
+
++------------------------------------------------------------------------------+
+|                               bitrise summary                                |
++---+---------------------------------------------------------------+----------+
+|   | title                                                         | time (s) |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mactivate-ssh-key@4.0.3[0m                                        | 4.90 sec |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mgit-clone@4.0.14[0m                                              | 4.72 sec |
++---+---------------------------------------------------------------+----------+
+| Update available: 4.0.14 -> 4.0.17                                           |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mcache-pull@2.0.1[0m                                              | 11.84 sec|
++---+---------------------------------------------------------------+----------+
+| Update available: 2.0.1 -> 2.1.0                                             |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mDo anything with Script step[0m                                  | 1.74 sec |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1minstall-missing-android-tools@2.3.5[0m                           | 1.4 min  |
++---+---------------------------------------------------------------+----------+
+| Update available: 2.3.5 -> 2.3.7                                             |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mandroid-lint@0.9.6[0m                                            | 1.9 min  |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mandroid-unit-test@0.11.1[0m                                      | 13.56 sec|
++---+---------------------------------------------------------------+----------+
+| Update available: 0.11.1 -> 1.0.0                                            |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mdeploy-to-bitrise-io@1.6.0[0m                                    | 9.69 sec |
++---+---------------------------------------------------------------+----------+
+| Update available: 1.6.0 -> 1.7.1                                             |
++---+---------------------------------------------------------------+----------+
+| [32;1m✓[0m | [32;1mcache-push@2.2.0[0m                                              | 4.72 sec |
++---+---------------------------------------------------------------+----------+
+| Total runtime: 4.1 min                                                       |
++------------------------------------------------------------------------------+
+
+[34;1m[0m
+[34;1mSubmitting anonymized usage informations...[0m
+[34;1mFor more information visit:[0m
+[34;1mhttps://github.com/bitrise-io/bitrise-plugins-analytics/blob/master/README.md[0m
